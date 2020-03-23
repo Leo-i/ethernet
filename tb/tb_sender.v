@@ -49,11 +49,11 @@ assign  rx_d = tx_d;
 initial begin
     #100
     rst <= 1'b1;
-    #100
+    #200
     rst <= 1'b0;
     #500
     btn <= 1'b1;
-    #1000
+    #100
     btn <= 1'b0;
 
     while ( 1 ) begin
@@ -70,7 +70,7 @@ initial begin
 end
 
 
-sender tx(
+hw_test_ethernet_module tx(
 .sys_clk        ( sys_clk       ),
 .led            ( led           ),
 .rst            ( rst           ),
@@ -106,7 +106,7 @@ sender tx(
 
 initial begin
     forever begin
-        # 20
+        # 5
         sys_clk <= !sys_clk;
     end
 end

@@ -1,3 +1,22 @@
+proc findFiles { basedir pattern } {
+
+    set basedir [string trimright [file join [file normalize $basedir] { }]]
+    set fileList {}
+	
+    foreach fileName [glob -nocomplain -type {f r} -path $basedir $pattern] {
+        lappend fileList $fileName
+    }	
+	
+    foreach dirName [glob -nocomplain -type {d  r} -path $basedir *] {
+        set subDirList [findFiles $dirName $pattern]
+        if { [llength $subDirList] > 0 } {
+            foreach subDirFile $subDirList {
+		lappend fileList $subDirFile
+            }
+        }
+    }
+    return $fileList
+}
 
 set TclPath [file dirname [file normalize [info script]]]
 set NewLoc [string range $TclPath 0 [string last / $TclPath]-5]

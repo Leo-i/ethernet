@@ -134,16 +134,14 @@ always_ff@( posedge clk ) begin
                 
             end
             DATA: begin
-                if ( mode ) // read operation
+                if ( mode ) begin // read operation
                     if ( send_state == 4'b1111 ) begin
                         state                <= IDLE;
-                        data_o[send_state]   <= MDIO_io;
                         done                 <= 1'b1;
                     end else
-                    begin
                         send_state           <= send_state + 1'b1;
-                        data_o[send_state]   <= MDIO_io;
-                    end
+                    data_o[send_state]   <= MDIO_io;
+                end
                 else
                     if ( send_state == 4'b1111 ) begin
                         state       <= IDLE;
