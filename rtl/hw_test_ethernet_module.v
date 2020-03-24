@@ -25,6 +25,7 @@ module hw_test_ethernet_module(
     output [7:0]         led,
     input                rst,
     input                btn,
+    input                rx2_clear,
 
     // phy 1
     input                clk_out_1   ,
@@ -65,10 +66,10 @@ assign  clk_50_mhz_2  = clk_50_mhz_90;
 assign  rst_n_1       = rst_n;
 assign  rst_n_2       = rst_n;
 
-assign  led[0]        = done;
+assign  led[0]        = rx2_ready;
+assign  led[1]        = rx2_clear;
 assign  led[5]        = led_phy_1;
 assign  led[6]        = led_phy_2;
-assign  led[7]        = locked;
 
 // receive and send via uart
 wire    [15:0]      rx2_data_count;
@@ -173,7 +174,7 @@ always@( posedge clk_100_mhz )begin
 
     if ( btn ) begin
         wr_state        <= 5'h0;
-        delay_write     <= 24'hFFFFFFF;
+        delay_write     <= 24'hFF;//FFFFFF;
         done            <= 1'b0;
         tx1_valid       <= 1'b0;
         tx1_data_in     <= 32'h0;
@@ -192,14 +193,14 @@ always@( posedge clk_100_mhz )begin
             5'h2 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'hFFFFFFFF; wr_state  <= 5'h3 ;    end
             5'h3 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'hFFFF88E3; wr_state  <= 5'h4 ;    end
             5'h4 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h56789ABC; wr_state  <= 5'h5 ;    end
-            5'h5 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h08004500; wr_state  <= 5'h6 ;    end
-            5'h6 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h0024774F; wr_state  <= 5'h7 ;    end
-            5'h7 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h00008011; wr_state  <= 5'h8 ;    end
-            5'h8 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h59F8A9FE; wr_state  <= 5'h9 ;    end
-            5'h9 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h1585A9FE; wr_state  <= 5'hA ;    end
-            5'hA : begin tx1_valid <= 1'b1; tx1_data_in <= 32'hFFFFDD5B; wr_state  <= 5'hB ;    end
-            5'hB : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h05FE0010; wr_state  <= 5'hC ;    end
-            5'hC : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h147D5443; wr_state  <= 5'hD ;    end
+            5'h5 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h08060001; wr_state  <= 5'h6 ;    end
+            5'h6 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h08000604; wr_state  <= 5'h7 ;    end
+            5'h7 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h000188E3; wr_state  <= 5'h8 ;    end
+            5'h8 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h56789ABC; wr_state  <= 5'h9 ;    end
+            5'h9 : begin tx1_valid <= 1'b1; tx1_data_in <= 32'ha9fe1032; wr_state  <= 5'hA ;    end
+            5'hA : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h00000000; wr_state  <= 5'hB ;    end
+            5'hB : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h0000c0a8; wr_state  <= 5'hC ;    end
+            5'hC : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h01010000; wr_state  <= 5'h17 ; /*D;*/   end
             5'hD : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h46320400; wr_state  <= 5'hE ;    end
             5'hE : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h00000204; wr_state  <= 5'hF ;    end
             5'hF : begin tx1_valid <= 1'b1; tx1_data_in <= 32'h05b40103; wr_state  <= 5'h10;    end
@@ -244,25 +245,22 @@ uart uart(
 .dout                   ( uart_dout         )
 );
 
-reg     reset = 1'b0;
 
-clk_wizard clock(
+clk_wiz_0 clock(
 .clk_100_mhz            ( clk_100_mhz       ),
 .clk_50_mhz             ( clk_50_mhz        ),
-.reset                  ( reset             ),
-.locked                 ( locked            ),
 .clk_in1                ( sys_clk           ),
 .clk_25_mhz             ( clk_25_mhz        ),
 .clk_50_mhz_90          ( clk_50_mhz_90     )
  );
 
 reg             rx1_read_en  = 1'b0;
-reg             rx1_clear    = 1'b0;
 reg             DM1_start    = 1'h0;
 reg             DM1_mode     = 1'h0;
 reg             DM1_addr     = 5'h0;
 reg             DM1_reg_addr = 5'h0;
 reg             DM1_data_i   = 16'h0;
+reg             rx1_clear    = 1'b0;
 
  ethernet_module ethernet_1(
 
@@ -286,6 +284,7 @@ reg             DM1_data_i   = 16'h0;
 .rx_empty               ( rx1_empty          ),
 .rx_data_count          ( rx1_data_count     ),
 .rx_protocol_type       ( rx1_protocol_type  ),
+.rx_clear               ( rx1_clear          ),
 
 // DM =====================================
 .DM_start               ( DM1_start          ),
@@ -339,6 +338,7 @@ ethernet_module ethernet_2(
 .rx_empty               ( rx2_empty          ),
 .rx_data_count          ( rx2_data_count     ),
 .rx_protocol_type       ( rx2_protocol_type  ),
+.rx_clear               ( rx2_clear          ),
 
 // DM =====================================
 .DM_start               ( DM2_start          ),

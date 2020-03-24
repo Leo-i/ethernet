@@ -22,9 +22,10 @@
 
 module tb_sender();
 
-reg         sys_clk = 1'b1 ;
-reg         rst     = 1'b0 ;
-reg         btn     = 1'b0 ;
+reg         sys_clk     = 1'b1 ;
+reg         rst         = 1'b0 ;
+reg         btn         = 1'b0 ;
+reg         rx2_clear   = 1'b0;   
 
 reg         rx_er   = 1'b1;
 reg         crs_dv  = 1'b0; 
@@ -37,6 +38,7 @@ reg         led_phy_1 = 1'b0;
 reg         rx_er_1   = 1'b0;
 reg         rx_d_1    = 1'b0;
 
+
 reg         clk_out_2 = 1'b0;
 reg         led_phy_2 = 1'b0;
 
@@ -47,7 +49,7 @@ wire [1:0]  rx_d;
 assign  rx_d = tx_d;
 
 initial begin
-    #100
+    #1000
     rst <= 1'b1;
     #200
     rst <= 1'b0;
@@ -55,6 +57,10 @@ initial begin
     btn <= 1'b1;
     #100
     btn <= 1'b0;
+    #19000
+    rx2_clear   <= 1'b1;
+    #2000;
+    rx2_clear   <= 1'b0;
 
     while ( 1 ) begin
         #1
@@ -75,6 +81,7 @@ hw_test_ethernet_module tx(
 .led            ( led           ),
 .rst            ( rst           ),
 .btn            ( btn           ),
+.rx2_clear      ( rx2_clear     ),
 
 .clk_out_1      ( clk_out_1     ),
 .crs_dv_1       ( crs_dv_1      ),

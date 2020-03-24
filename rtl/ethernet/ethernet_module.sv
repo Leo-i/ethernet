@@ -42,6 +42,7 @@ module ethernet_module(
     output              rx_empty,
     output      [15:0]  rx_data_count,
     output      [15:0]  rx_protocol_type,
+    input               rx_clear,
 
 // DM =====================================
     input                DM_start,
@@ -76,10 +77,13 @@ controller DM_controller(
 .done               ( DM_done           )
 );
 
+wire reset;
+assign reset = ( rst_n && (!rx_clear) );
+
 receiver_wrapper receiver(
 .clk_100_mhz        ( clk_100_mhz       ),
 .clk_50_mhz         ( clk_50_mhz        ),
-.rst_n              ( rst_n             ),
+.rst_n              ( reset             ),
 .rx_er              ( rx_er             ),
 .rx_d               ( rx_d              ),
 .crs_dv             ( crs_dv            ),
@@ -90,6 +94,7 @@ receiver_wrapper receiver(
 .data_count         ( rx_data_count     ),
 .protocol_type      ( rx_protocol_type  )     
 );
+
 
 transmitter_wrapper transmitter(
 .clk_100_mhz        ( clk_100_mhz       ),

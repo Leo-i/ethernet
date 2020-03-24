@@ -40,34 +40,44 @@ module receiver_wrapper(
 );
 
 wire    [7:0]   data;
-reg     [15:0]  counter = 16'h0;;
+reg     [15:0]  counter = 16'h0;
+reg             unknown_type = 1'b0;
 
-//assign ready = (  counter >= data_count + 4'hC );
 
 always_ff@( posedge clk_50_mhz ) begin
 
     if ( rst_n == 1'b0 ) begin
-        counter         <= 8'b0;
-        protocol_type   <= 16'h0; 
+        counter         <= 16'b0;
+        protocol_type   <= 16'h0;
+        unknown_type    <= 1'b0;
+        data_count      <= 16'h1FFF;
+        ready           <= 1'b0; 
 
     end else begin
-    
-        if ( done ) begin // octet counter
+
+        if ( done && !ready ) begin // octet counter
 
             counter <= counter + 1'b1;
+            ready   <= ( counter >= data_count +3 ) || unknown_type ;
 
             case ( counter )
                 8'hC:   protocol_type[15:8]  <= data;
                 8'hD:   protocol_type[7:0]   <= data;
-                8'h10:  data_count[15:8]     <= data;
-                8'h11:  data_count[7:0]      <= data;
-                8'h12:  begin 
-                    data_count  <= data_count + 4'hC;
-                    ready       <= 1'b1;
-                end
             endcase
 
-        end
+            case ( protocol_type )
+                16'h0800:  //IPv4
+                    case ( counter )
+                        8'h10:  data_count[15:8]    <= data;
+                        8'h11:  data_count[7:0]     <= data;
+                        8'h12:  data_count          <= data_count + 4'hC;
+                    endcase
+                16'h0806: //ARP
+                    data_count  <= 16'h002A;
+                default: if ( (counter > 15'hE) && (data_count == 16'h1FFF) ) unknown_type <= 1'b1;
+            endcase
+
+        end 
 
     end
 
@@ -78,7 +88,7 @@ FIFO_RX FIFO_RX(
 .rd_clk         ( clk_100_mhz       ),
 .rst            ( !rst_n            ),
 .din            ( data              ),
-.wr_en          ( done              ),
+.wr_en          ( done && !ready    ),
 .rd_en          ( read_en           ),
 .dout           ( data_o            ),
 .full           ( full              ),

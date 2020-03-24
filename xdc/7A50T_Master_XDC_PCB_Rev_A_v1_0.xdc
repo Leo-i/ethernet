@@ -239,7 +239,7 @@ set_property -dict { PACKAGE_PIN T2   IOSTANDARD LVCMOS33 } [get_ports {rst     
 # ----------------------------------------------------------------------------
 #set_property -dict { PACKAGE_PIN N4   IOSTANDARD LVCMOS33 } [get_ports {rst     }];
 set_property -dict { PACKAGE_PIN R2   IOSTANDARD LVCMOS33 } [get_ports {btn     }];
-#set_property -dict { PACKAGE_PIN R1   IOSTANDARD LVCMOS33 } [get_ports {PB3     }];
+set_property -dict { PACKAGE_PIN R1   IOSTANDARD LVCMOS33 } [get_ports {rx2_clear}];
 #set_property -dict { PACKAGE_PIN R3   IOSTANDARD LVCMOS33 } [get_ports {PB_RST  }];
 
 
