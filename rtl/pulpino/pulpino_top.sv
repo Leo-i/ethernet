@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module pulpino_top (
-  input  logic       CLK100MHZ,
+  input  logic       sys_clk,
   input  logic       ck_rst,
 
   inout  logic  [3:0] spi_master_sdio,
@@ -39,7 +39,6 @@ localparam GPIO_NUMBER        = 32;
 localparam GPIO_DIR_IN        =  0;
 localparam GPIO_DIR_OUT       =  1;
 
-logic       clk_sys;
 logic       rst_n;
 
 logic [3:0] spi_master_sdo;
@@ -52,12 +51,7 @@ logic        [31:0] gpio_out;
 logic        [31:0] gpio_dir;
 logic [31:0]  [5:0] gpio_padcfg;
 
-clk_pll clk_pll_i(
-  .resetn   ( ck_rst ),
-  .clk_in   ( CLK100MHZ ),
-  .clk_out1 ( clk_sys ),
-  .locked   ( locked )
-  );
+
 
 assign rst_n = (locked & ck_rst) ? 1'b1 : 1'b0;
 assign spi_master_tx_en = ((spi_master_mode == SPI_MASTER_QUAD_TX) || (spi_master_mode == SPI_MASTER_STD)) ? 1'b1 : 1'b0;
@@ -88,7 +82,7 @@ pulpino
   )
   pulpino_i
   (
-      .clk                ( clk_sys ),
+      .clk                ( sys_clk ),
       .rst_n              ( ck_rst ),
 
       //.clk_sel_i        (  ),

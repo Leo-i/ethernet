@@ -15,7 +15,6 @@
 
 module peripherals
   #(
-    parameter PLATFORM             = "GENERIC",
     parameter AXI_ADDR_WIDTH       = 32,
     parameter AXI_DATA_WIDTH       = 64,
     parameter AXI_USER_WIDTH       = 6,
@@ -47,49 +46,27 @@ module peripherals
 
     AXI_BUS.Slave  slave,
 
-    output logic              uart0_tx,
-    input  logic              uart0_rx,
-    output logic              uart0_rts,
-    output logic              uart0_dtr,
-    input  logic              uart0_cts,
-    input  logic              uart0_dsr,
+    output logic              uart_tx,
+    input  logic              uart_rx,
+    output logic              uart_rts,
+    output logic              uart_dtr,
+    input  logic              uart_cts,
+    input  logic              uart_dsr,
 
-    output logic              uart1_tx,
-    input  logic              uart1_rx,
-    output logic              uart1_rts,
-    output logic              uart1_dtr,
-    input  logic              uart1_cts,
-    input  logic              uart1_dsr,
-
-    output logic              spi0_master_clk,
-    output logic              spi0_master_csn0,
-    output logic              spi0_master_csn1,
-    output logic              spi0_master_csn2,
-    output logic              spi0_master_csn3,
-    output logic       [1:0]  spi0_master_mode,
-    output logic              spi0_master_sdo0,
-    output logic              spi0_master_sdo1,
-    output logic              spi0_master_sdo2,
-    output logic              spi0_master_sdo3,
-    input  logic              spi0_master_sdi0,
-    input  logic              spi0_master_sdi1,
-    input  logic              spi0_master_sdi2,
-    input  logic              spi0_master_sdi3,
-
-    output logic              spi1_master_clk,
-    output logic              spi1_master_csn0,
-    output logic              spi1_master_csn1,
-    output logic              spi1_master_csn2,
-    output logic              spi1_master_csn3,
-    output logic       [1:0]  spi1_master_mode,
-    output logic              spi1_master_sdo0,
-    output logic              spi1_master_sdo1,
-    output logic              spi1_master_sdo2,
-    output logic              spi1_master_sdo3,
-    input  logic              spi1_master_sdi0,
-    input  logic              spi1_master_sdi1,
-    input  logic              spi1_master_sdi2,
-    input  logic              spi1_master_sdi3,
+    output logic              spi_master_clk,
+    output logic              spi_master_csn0,
+    output logic              spi_master_csn1,
+    output logic              spi_master_csn2,
+    output logic              spi_master_csn3,
+    output logic       [1:0]  spi_master_mode,
+    output logic              spi_master_sdo0,
+    output logic              spi_master_sdo1,
+    output logic              spi_master_sdo2,
+    output logic              spi_master_sdo3,
+    input  logic              spi_master_sdi0,
+    input  logic              spi_master_sdi1,
+    input  logic              spi_master_sdi2,
+    input  logic              spi_master_sdi3,
 
     input  logic              scl_pad_i,
     output logic              scl_pad_o,
@@ -123,31 +100,25 @@ module peripherals
   );
 
   localparam APB_ADDR_WIDTH  = 32;
-  localparam APB_NUM_SLAVES  = 11;
+  localparam APB_NUM_SLAVES  = 8;
 
   APB_BUS s_apb_bus();
 
-  APB_BUS s_uart0_bus();
-  APB_BUS s_uart1_bus();
+  APB_BUS s_uart_bus();
   APB_BUS s_gpio_bus();
-  APB_BUS s_spi0_bus();
-  APB_BUS s_spi1_bus();
-  APB_BUS s_timer0_bus();
-  APB_BUS s_timer1_bus();
+  APB_BUS s_spi_bus();
+  APB_BUS s_timer_bus();
   APB_BUS s_event_unit_bus();
   APB_BUS s_i2c_bus();
   APB_BUS s_fll_bus();
   APB_BUS s_soc_ctrl_bus();
   APB_BUS s_debug_bus();
 
-  logic [1:0]   s_spim0_event;
-  logic [1:0]   s_spim1_event;
-  logic [3:0]   timer0_irq;
-  logic [3:0]   timer1_irq;
+  logic [1:0]   s_spim_event;
+  logic [3:0]   timer_irq;
   logic [31:0]  peripheral_clock_gate_ctrl;
   logic [31:0]  clk_int;
-  logic         s_uart0_event;
-  logic         s_uart1_event;
+  logic         s_uart_event;
   logic         i2c_event;
   logic         s_gpio_event;
 
@@ -248,13 +219,10 @@ module peripherals
 
      .apb_slave         ( s_apb_bus        ),
 
-     .uart0_master      ( s_uart0_bus      ),
-     .uart1_master      ( s_uart1_bus      ),
+     .uart_master       ( s_uart_bus       ),
      .gpio_master       ( s_gpio_bus       ),
-     .spi0_master       ( s_spi0_bus       ),
-     .spi1_master       ( s_spi1_bus       ),
-     .timer0_master     ( s_timer0_bus     ),
-     .timer1_master     ( s_timer1_bus     ),
+     .spi_master        ( s_spi_bus        ),
+     .timer_master      ( s_timer_bus      ),
      .event_unit_master ( s_event_unit_bus ),
      .i2c_master        ( s_i2c_bus        ),
      .fll_master        ( s_fll_bus        ),
@@ -264,79 +232,71 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 0: APB UART0 interface                           ///
+  /// APB Slave 0: APB UART interface                            ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
-  apb_uart apb_uart0_i (
+  `ifndef VERILATOR
+  apb_uart apb_uart_i (
     .CLK      ( clk_int[1]   ),
     .RSTN     ( rst_n        ),
 
-    .PSEL     ( s_uart0_bus.psel       ),
-    .PENABLE  ( s_uart0_bus.penable    ),
-    .PWRITE   ( s_uart0_bus.pwrite     ),
-    .PADDR    ( s_uart0_bus.paddr[4:2] ),
-    .PWDATA   ( s_uart0_bus.pwdata     ),
-    .PRDATA   ( s_uart0_bus.prdata     ),
-    .PREADY   ( s_uart0_bus.pready     ),
-    .PSLVERR  ( s_uart0_bus.pslverr    ),
+    .PSEL     ( s_uart_bus.psel    ),
+    .PENABLE  ( s_uart_bus.penable    ),
+    .PWRITE   ( s_uart_bus.pwrite     ),
+    .PADDR    ( s_uart_bus.paddr[4:2] ),
+    .PWDATA   ( s_uart_bus.pwdata     ),
+    .PRDATA   ( s_uart_bus.prdata  ),
+    .PREADY   ( s_uart_bus.pready  ),
+    .PSLVERR  ( s_uart_bus.pslverr ),
 
-    .INT      ( s_uart0_event ),   //Interrupt output
+    .INT      ( s_uart_event ),   //Interrupt output
 
-    .OUT1N    (),                     //Output 1
-    .OUT2N    (),                     //Output 2
-    .RTSN     ( uart0_rts    ),       //RTS output
-    .DTRN     ( uart0_dtr    ),       //DTR output
-    .CTSN     ( uart0_cts    ),       //CTS input
-    .DSRN     ( uart0_dsr    ),       //DSR input
-    .DCDN     ( 1'b1         ),       //DCD input
-    .RIN      ( 1'b1         ),       //RI input
-    .SIN      ( uart0_rx     ),
-    .SOUT     ( uart0_tx     )
+    .OUT1N    (),                    //Output 1
+    .OUT2N    (),                    //Output 2
+    .RTSN     ( uart_rts    ),       //RTS output
+    .DTRN     ( uart_dtr    ),       //DTR output
+    .CTSN     ( uart_cts    ),       //CTS input
+    .DSRN     ( uart_dsr    ),       //DSR input
+    .DCDN     ( 1'b1        ),       //DCD input
+    .RIN      ( 1'b1        ),       //RI input
+    .SIN      ( uart_rx     ),
+    .SOUT     ( uart_tx     )
   );
+  `else
+  apb_uart_sv
+    #(
+       .APB_ADDR_WIDTH( 3 )
+    )
+    apb_uart_i
+    (
+      .CLK      ( clk_int[1]            ),
+      .RSTN     ( rst_n                 ),
 
-    //////////////////////////////////////////////////////////////////
-  ///                                                            ///
-  /// APB Slave 1: APB UART1 interface                           ///
-  ///                                                            ///
-  //////////////////////////////////////////////////////////////////
+      .PSEL     ( s_uart_bus.psel       ),
+      .PENABLE  ( s_uart_bus.penable    ),
+      .PWRITE   ( s_uart_bus.pwrite     ),
+      .PADDR    ( s_uart_bus.paddr[4:2] ),
+      .PWDATA   ( s_uart_bus.pwdata     ),
+      .PRDATA   ( s_uart_bus.prdata     ),
+      .PREADY   ( s_uart_bus.pready     ),
+      .PSLVERR  ( s_uart_bus.pslverr    ),
 
-  apb_uart apb_uart1_i (
-    .CLK      ( clk_int[2]   ),
-    .RSTN     ( rst_n        ),
-
-    .PSEL     ( s_uart1_bus.psel       ),
-    .PENABLE  ( s_uart1_bus.penable    ),
-    .PWRITE   ( s_uart1_bus.pwrite     ),
-    .PADDR    ( s_uart1_bus.paddr[4:2] ),
-    .PWDATA   ( s_uart1_bus.pwdata     ),
-    .PRDATA   ( s_uart1_bus.prdata     ),
-    .PREADY   ( s_uart1_bus.pready     ),
-    .PSLVERR  ( s_uart1_bus.pslverr    ),
-
-    .INT      ( s_uart1_event ),   //Interrupt output
-
-    .OUT1N    (),                     //Output 1
-    .OUT2N    (),                     //Output 2
-    .RTSN     ( uart1_rts    ),       //RTS output
-    .DTRN     ( uart1_dtr    ),       //DTR output
-    .CTSN     ( uart1_cts    ),       //CTS input
-    .DSRN     ( uart1_dsr    ),       //DSR input
-    .DCDN     ( 1'b1         ),       //DCD input
-    .RIN      ( 1'b1         ),       //RI input
-    .SIN      ( uart1_rx     ),
-    .SOUT     ( uart1_tx     )
-  );
+      .rx_i     ( uart_rx               ),
+      .tx_o     ( uart_tx               ),
+      .event_o  ( s_uart_event          )
+    );
+  `endif
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 2: APB GPIO interface                            ///
+  /// APB Slave 1: APB GPIO interface                            ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
   apb_gpio apb_gpio_i
   (
-    .HCLK       ( clk_int[3]   ),
+    .HCLK       ( clk_int[2]   ),
     .HRESETn    ( rst_n        ),
 
     .PADDR      ( s_gpio_bus.paddr[11:0]),
@@ -357,7 +317,7 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 3: APB SPI0 Master interface                     ///
+  /// APB Slave 2: APB SPI Master interface                      ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
@@ -365,131 +325,65 @@ module peripherals
   #(
       .BUFFER_DEPTH(8)
   )
-  apb_spi0_master_i
+  apb_spi_master_i
   (
-    .HCLK         ( clk_int[4]   ),
+    .HCLK         ( clk_int[3]   ),
     .HRESETn      ( rst_n        ),
 
-    .PADDR        ( s_spi0_bus.paddr[11:0]),
-    .PWDATA       ( s_spi0_bus.pwdata     ),
-    .PWRITE       ( s_spi0_bus.pwrite     ),
-    .PSEL         ( s_spi0_bus.psel       ),
-    .PENABLE      ( s_spi0_bus.penable    ),
-    .PRDATA       ( s_spi0_bus.prdata     ),
-    .PREADY       ( s_spi0_bus.pready     ),
-    .PSLVERR      ( s_spi0_bus.pslverr    ),
+    .PADDR        ( s_spi_bus.paddr[11:0]),
+    .PWDATA       ( s_spi_bus.pwdata     ),
+    .PWRITE       ( s_spi_bus.pwrite     ),
+    .PSEL         ( s_spi_bus.psel       ),
+    .PENABLE      ( s_spi_bus.penable    ),
+    .PRDATA       ( s_spi_bus.prdata     ),
+    .PREADY       ( s_spi_bus.pready     ),
+    .PSLVERR      ( s_spi_bus.pslverr    ),
 
-    .events_o     ( s_spim0_event ),
+    .events_o     ( s_spim_event ),
 
-    .spi_clk      ( spi0_master_clk  ),
-    .spi_csn0     ( spi0_master_csn0 ),
-    .spi_csn1     ( spi0_master_csn1 ),
-    .spi_csn2     ( spi0_master_csn2 ),
-    .spi_csn3     ( spi0_master_csn3 ),
-    .spi_mode     ( spi0_master_mode ),
-    .spi_sdo0     ( spi0_master_sdo0 ),
-    .spi_sdo1     ( spi0_master_sdo1 ),
-    .spi_sdo2     ( spi0_master_sdo2 ),
-    .spi_sdo3     ( spi0_master_sdo3 ),
-    .spi_sdi0     ( spi0_master_sdi0 ),
-    .spi_sdi1     ( spi0_master_sdi1 ),
-    .spi_sdi2     ( spi0_master_sdi2 ),
-    .spi_sdi3     ( spi0_master_sdi3 )
-  );
-
-    //////////////////////////////////////////////////////////////////
-  ///                                                            ///
-  /// APB Slave 4: APB SPI1 Master interface                     ///
-  ///                                                            ///
-  //////////////////////////////////////////////////////////////////
-
-  apb_spi_master
-  #(
-      .BUFFER_DEPTH(8)
-  )
-  apb_spi1_master_i
-  (
-    .HCLK         ( clk_int[5]   ),
-    .HRESETn      ( rst_n        ),
-
-    .PADDR        ( s_spi1_bus.paddr[11:0]),
-    .PWDATA       ( s_spi1_bus.pwdata     ),
-    .PWRITE       ( s_spi1_bus.pwrite     ),
-    .PSEL         ( s_spi1_bus.psel       ),
-    .PENABLE      ( s_spi1_bus.penable    ),
-    .PRDATA       ( s_spi1_bus.prdata     ),
-    .PREADY       ( s_spi1_bus.pready     ),
-    .PSLVERR      ( s_spi1_bus.pslverr    ),
-
-    .events_o     ( s_spim1_event ),
-
-    .spi_clk      ( spi1_master_clk  ),
-    .spi_csn0     ( spi1_master_csn0 ),
-    .spi_csn1     ( spi1_master_csn1 ),
-    .spi_csn2     ( spi1_master_csn2 ),
-    .spi_csn3     ( spi1_master_csn3 ),
-    .spi_mode     ( spi1_master_mode ),
-    .spi_sdo0     ( spi1_master_sdo0 ),
-    .spi_sdo1     ( spi1_master_sdo1 ),
-    .spi_sdo2     ( spi1_master_sdo2 ),
-    .spi_sdo3     ( spi1_master_sdo3 ),
-    .spi_sdi0     ( spi1_master_sdi0 ),
-    .spi_sdi1     ( spi1_master_sdi1 ),
-    .spi_sdi2     ( spi1_master_sdi2 ),
-    .spi_sdi3     ( spi1_master_sdi3 )
+    .spi_clk      ( spi_master_clk  ),
+    .spi_csn0     ( spi_master_csn0 ),
+    .spi_csn1     ( spi_master_csn1 ),
+    .spi_csn2     ( spi_master_csn2 ),
+    .spi_csn3     ( spi_master_csn3 ),
+    .spi_mode     ( spi_master_mode ),
+    .spi_sdo0     ( spi_master_sdo0 ),
+    .spi_sdo1     ( spi_master_sdo1 ),
+    .spi_sdo2     ( spi_master_sdo2 ),
+    .spi_sdo3     ( spi_master_sdo3 ),
+    .spi_sdi0     ( spi_master_sdi0 ),
+    .spi_sdi1     ( spi_master_sdi1 ),
+    .spi_sdi2     ( spi_master_sdi2 ),
+    .spi_sdi3     ( spi_master_sdi3 )
   );
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 5: Timer0 Unit                                   ///
+  /// APB Slave 3: Timer Unit                                    ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
   apb_timer
-  apb_timer0_i
+  apb_timer_i
   (
-    .HCLK       ( clk_int[6]   ),
+    .HCLK       ( clk_int[4]   ),
     .HRESETn    ( rst_n        ),
 
-    .PADDR      ( s_timer0_bus.paddr[11:0]),
-    .PWDATA     ( s_timer0_bus.pwdata     ),
-    .PWRITE     ( s_timer0_bus.pwrite     ),
-    .PSEL       ( s_timer0_bus.psel       ),
-    .PENABLE    ( s_timer0_bus.penable    ),
-    .PRDATA     ( s_timer0_bus.prdata     ),
-    .PREADY     ( s_timer0_bus.pready     ),
-    .PSLVERR    ( s_timer0_bus.pslverr    ),
+    .PADDR      ( s_timer_bus.paddr[11:0]),
+    .PWDATA     ( s_timer_bus.pwdata     ),
+    .PWRITE     ( s_timer_bus.pwrite     ),
+    .PSEL       ( s_timer_bus.psel       ),
+    .PENABLE    ( s_timer_bus.penable    ),
+    .PRDATA     ( s_timer_bus.prdata     ),
+    .PREADY     ( s_timer_bus.pready     ),
+    .PSLVERR    ( s_timer_bus.pslverr    ),
 
-    .irq_o      ( timer0_irq    )
+    .irq_o      ( timer_irq    )
   );
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 6: Timer1 Unit                                   ///
-  ///                                                            ///
-  //////////////////////////////////////////////////////////////////
-
-  apb_timer
-  apb_timer1_i
-  (
-    .HCLK       ( clk_int[7]   ),
-    .HRESETn    ( rst_n        ),
-
-    .PADDR      ( s_timer1_bus.paddr[11:0]),
-    .PWDATA     ( s_timer1_bus.pwdata     ),
-    .PWRITE     ( s_timer1_bus.pwrite     ),
-    .PSEL       ( s_timer1_bus.psel       ),
-    .PENABLE    ( s_timer1_bus.penable    ),
-    .PRDATA     ( s_timer1_bus.prdata     ),
-    .PREADY     ( s_timer1_bus.pready     ),
-    .PSLVERR    ( s_timer1_bus.pslverr    ),
-
-    .irq_o      ( timer1_irq    )
-  );
-
-  //////////////////////////////////////////////////////////////////
-  ///                                                            ///
-  /// APB Slave 7: Event Unit                                    ///
+  /// APB Slave 4: Event Unit                                    ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
@@ -497,7 +391,7 @@ module peripherals
   apb_event_unit_i
   (
     .clk_i            ( clk_i        ),
-    .HCLK             ( clk_int[8]   ),
+    .HCLK             ( clk_int[5]   ),
     .HRESETn          ( rst_n        ),
 
     .PADDR            ( s_event_unit_bus.paddr[11:0]),
@@ -509,8 +403,8 @@ module peripherals
     .PREADY           ( s_event_unit_bus.pready     ),
     .PSLVERR          ( s_event_unit_bus.pslverr    ),
 
-    .irq_i            ( {timer0_irq, timer1_irq, s_spim0_event, s_spim1_event, s_gpio_event, s_uart0_event, s_uart1_event, i2c_event, 16'b0} ),
-    .event_i          ( {timer0_irq, timer1_irq, s_spim0_event, s_spim1_event, s_gpio_event, s_uart0_event, s_uart1_event, i2c_event, 16'b0} ),
+    .irq_i            ( {timer_irq, s_spim_event, s_gpio_event, s_uart_event, i2c_event, 23'b0} ),
+    .event_i          ( {timer_irq, s_spim_event, s_gpio_event, s_uart_event, i2c_event, 23'b0} ),
     .irq_o            ( irq_o              ),
 
     .fetch_enable_i   ( fetch_enable_i     ),
@@ -521,14 +415,14 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 8: I2C                                           ///
+  /// APB Slave 5: I2C                                           ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
   apb_i2c
   apb_i2c_i
   (
-    .HCLK         ( clk_int[9]    ),
+    .HCLK         ( clk_int[6]    ),
     .HRESETn      ( rst_n         ),
 
     .PADDR        ( s_i2c_bus.paddr[11:0] ),
@@ -551,14 +445,14 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 9: FLL Ctrl                                      ///
+  /// APB Slave 6: FLL Ctrl                                      ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
     apb_fll_if apb_fll_if_i
     (
-      .HCLK        ( clk_int[10]   ),
-      .HRESETn     ( rst_n         ),
+      .HCLK        ( clk_int[7]   ),
+      .HRESETn     ( rst_n        ),
 
       .PADDR       ( s_fll_bus.paddr[11:0]),
       .PWDATA      ( s_fll_bus.pwdata     ),
@@ -588,7 +482,7 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 10: PULPino control                              ///
+  /// APB Slave 7: PULPino control                               ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
@@ -618,7 +512,7 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 11: APB2PER for debug                            ///
+  /// APB Slave 8: APB2PER for debug                             ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 

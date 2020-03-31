@@ -13,12 +13,9 @@
 
 module instr_ram_wrap
   #(
-    parameter PLATFORM   = "GENERIC",
-    parameter BOOT_FILE  = "",
     parameter RAM_SIZE   = 32768,                // in bytes
     parameter ADDR_WIDTH = $clog2(RAM_SIZE) + 1, // one bit more than necessary, for the boot rom
-    parameter DATA_WIDTH = 32,
-    parameter BOOT_CODE_SIZE = 234
+    parameter DATA_WIDTH = 32
   )(
     // Clock and Reset
     input  logic                    clk,
@@ -43,7 +40,6 @@ module instr_ram_wrap
 
   sp_ram_wrap
   #(
-    .PLATFORM   ( PLATFORM   ),
     .RAM_SIZE   ( RAM_SIZE   ),
     .DATA_WIDTH ( DATA_WIDTH )
   )
@@ -63,10 +59,7 @@ module instr_ram_wrap
 
   boot_rom_wrap
   #(
-    .PLATFORM       ( PLATFORM       ),
-    .BOOT_FILE      ( BOOT_FILE      ),
-    .DATA_WIDTH     ( DATA_WIDTH     ),
-    .BOOT_CODE_SIZE ( BOOT_CODE_SIZE )
+    .DATA_WIDTH ( DATA_WIDTH )
   )
   boot_rom_wrap_i
   (

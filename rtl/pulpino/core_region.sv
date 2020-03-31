@@ -14,8 +14,6 @@
 
 module core_region
 #(
-    parameter PLATFORM             = "GENERIC",
-    parameter BOOT_FILE            = "",
     parameter AXI_ADDR_WIDTH       = 32,
     parameter AXI_DATA_WIDTH       = 64,
     parameter AXI_ID_MASTER_WIDTH  = 10,
@@ -23,11 +21,10 @@ module core_region
     parameter AXI_USER_WIDTH       = 0,
     parameter DATA_RAM_SIZE        = 32768, // in bytes
     parameter INSTR_RAM_SIZE       = 32768, // in bytes
-    parameter USE_ZERO_RISCY       = 1,
+    parameter USE_ZERO_RISCY       = 0,
     parameter RISCY_RV32F          = 0,
     parameter ZERO_RV32M           = 1,
-    parameter ZERO_RV32E           = 0,
-    parameter BOOT_CODE_SIZE       = 234
+    parameter ZERO_RV32E           = 0
 
   )
 (
@@ -120,36 +117,6 @@ module core_region
   logic [AXI_DATA_WIDTH-1:0]   data_mem_rdata;
   logic [AXI_DATA_WIDTH-1:0]   data_mem_wdata;
 
-  logic                        debug_halt;
-  logic                        debug_resume;
-  logic [1:0]                  cpu_stall_o;
-
-  wire cpu_stall_rise;
-  wire cpu_stall_fall;
-
-  assign cpu_stall_rise = cpu_stall_o[0] & ~cpu_stall_o[1];
-  assign cpu_stall_fall = cpu_stall_o[1] & ~cpu_stall_o[0];
-
-  always_ff @(posedge clk, negedge rst_n)
-  begin
-    if (rst_n == 1'b0) begin
-      debug_halt     <= 1'b0;
-      debug_resume   <= 1'b0;
-      cpu_stall_o[1] <= 1'b0;
-    end
-    else begin
-      cpu_stall_o[1] <= cpu_stall_o[0];
-
-      if (cpu_stall_rise & ~debug_halt)
-        debug_halt <= 1'b1;
-      else
-        debug_halt <= 1'b0;
-      if (cpu_stall_fall & ~debug_resume)
-        debug_resume <= 1'b1;
-      else
-        debug_resume <= 1'b0;
-    end
-  end
 
 
   enum logic [0:0] { AXI, RAM } lsu_resp_CS, lsu_resp_NS;
@@ -187,7 +154,7 @@ module core_region
     end
   end
 
-  /*ifdef(USE_ZERO_RISCY) begin: CORE
+  if(USE_ZERO_RISCY) begin: CORE
       zeroriscy_core
       #(
         .N_EXT_PERF_COUNTERS (     0      ),
@@ -235,15 +202,15 @@ module core_region
         .debug_wdata_i   ( debug.wdata       ),
         .debug_rdata_o   ( debug.rdata       ),
         .debug_halted_o  (                   ),
-        .debug_halt_i    ( debug_halt        ),
-        .debug_resume_i  ( debug_resume      ),
+        .debug_halt_i    ( 1'b0              ),
+        .debug_resume_i  ( 1'b0              ),
 
         .fetch_enable_i  ( fetch_enable_i    ),
         .core_busy_o     ( core_busy_o       ),
         .ext_perf_counters_i (               )
       );
   end else begin: CORE
-  */
+
     riscv_core
     #(
       .N_EXT_PERF_COUNTERS (     0       ),
@@ -277,7 +244,7 @@ module core_region
       .data_rdata_i    ( core_lsu_rdata    ),
       .data_gnt_i      ( core_lsu_gnt      ),
       .data_rvalid_i   ( core_lsu_rvalid   ),
-      // .data_err_i      ( 1'b0              ),
+      .data_err_i      ( 1'b0              ),
 
       .irq_i           ( (|irq_i)          ),
       .irq_id_i        ( irq_id            ),
@@ -294,8 +261,8 @@ module core_region
       .debug_wdata_i   ( debug.wdata       ),
       .debug_rdata_o   ( debug.rdata       ),
       .debug_halted_o  (                   ),
-      .debug_halt_i    ( debug_halt        ),
-      .debug_resume_i  ( debug_resume      ),
+      .debug_halt_i    ( 1'b0              ),
+      .debug_resume_i  ( 1'b0              ),
 
       .fetch_enable_i  ( fetch_enable_i    ),
       .core_busy_o     ( core_busy_o       ),
@@ -317,7 +284,7 @@ module core_region
 
       .ext_perf_counters_i (               )
       );
-  //end
+  end
 
   core2axi_wrap
   #(
@@ -423,11 +390,8 @@ module core_region
 
   instr_ram_wrap
   #(
-    .PLATFORM       ( PLATFORM       ),
-    .BOOT_FILE      ( BOOT_FILE      ),
-    .RAM_SIZE       ( INSTR_RAM_SIZE ),
-    .DATA_WIDTH     ( AXI_DATA_WIDTH ),
-    .BOOT_CODE_SIZE ( BOOT_CODE_SIZE )
+    .RAM_SIZE   ( INSTR_RAM_SIZE ),
+    .DATA_WIDTH ( AXI_DATA_WIDTH )
   )
   instr_mem
   (
@@ -511,7 +475,6 @@ module core_region
   //----------------------------------------------------------------------------//
   sp_ram_wrap
   #(
-    .PLATFORM   ( PLATFORM       ),
     .RAM_SIZE   ( DATA_RAM_SIZE  ),
     .DATA_WIDTH ( AXI_DATA_WIDTH )
   )
@@ -615,17 +578,15 @@ module core_region
 
     .test_mode_i ( testmode_i      ),
 
-
-    .cpu_addr_o  ( /*debug.addr*/      ),
+    .cpu_addr_o  (                 ),
     .cpu_data_i  ( '0              ),
-    .cpu_data_o  ( /*debug.wdata*/     ),
+    .cpu_data_o  (                 ),
     .cpu_bp_i    ( '0              ),
-    .cpu_stall_o ( cpu_stall_o[0]  ),
+    .cpu_stall_o (                 ),
     .cpu_stb_o   (                 ),
     .cpu_we_o    (                 ),
     .cpu_ack_i   ( '1              ),
     .cpu_rst_o   (                 ),
-
 
     .axi_aclk             ( clk                  ),
     .axi_aresetn          ( rst_n                ),

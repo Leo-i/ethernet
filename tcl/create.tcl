@@ -50,7 +50,7 @@ set_property target_language Verilog [current_project]
 if { $SrcVer != ""} { add_files 					-norecurse $SrcVer }
 if { $SrcXCI != ""} { add_files 					-norecurse $SrcXCI }
 if { $SrcXDC != ""} { add_files -fileset constrs_1  -norecurse $SrcXDC }
-if { $SrcTcl != ""} { add_files 					-norecurse $SrcTcl }
+#if { $SrcTcl != ""} { add_files 					-norecurse $SrcTcl }
 
 if { $SrcSim != ""} { add_files -fileset sim_1 		-norecurse $SrcSim }
 
