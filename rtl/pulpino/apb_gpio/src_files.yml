@@ -1,4 +1,0 @@
-apb_gpio:
-  files: [
-    ./rtl/apb_gpio.sv,
-  ]
