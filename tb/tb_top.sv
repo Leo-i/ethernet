@@ -26,6 +26,7 @@ module tb_top();
 
 logic   clk_200_mhz = 1'b1;
 logic   rst         = 1'b0;
+wire    [7:0]       led;
 always begin
     #(`CLK_PERIOD/2) clk_200_mhz = ~clk_200_mhz;
 end
@@ -34,21 +35,20 @@ initial begin
     rst     <= 1'b1;
     #(100*`CLK_PERIOD);
     rst     <= 1'b0;
-
-
+    #(50000*`CLK_PERIOD);
+    rst     <= 1'b1;
+    #(100*`CLK_PERIOD);
+    rst     <= 1'b0;
 end
 
-
-pulpino_top pulpino_top(
+top top(
 .clk_200_mhz    ( clk_200_mhz  ),
-.rst         ( rst          ),
+.rst            ( rst          ),
 
 .uart_tx        ( uart_tx      ),
 .uart_rx        ( uart_rx      ),
 
-.clk_out_1      ( clk_out_1    ),
 .crs_dv_1       ( crs_dv_1     ),
-.led_phy_1      ( led_phy_1    ),
 .mdc_1          ( mdc_1        ),
 .mdio_1         ( mdio_1       ),
 .clk_50_mhz_1   ( clk_50_mhz_1 ),
@@ -58,9 +58,7 @@ pulpino_top pulpino_top(
 .tx_d_1         ( tx_d_1       ),
 .tx_e_1         ( tx_e_1       ),
 
-.clk_out_2      ( clk_out_2    ),
 .crs_dv_2       ( crs_dv_2     ),
-.led_phy_2      ( led_phy_2    ),
 .mdc_2          ( mdc_2        ),
 .mdio_2         ( mdio_2       ),
 .clk_50_mhz_2   ( clk_50_mhz_2 ),
@@ -71,12 +69,7 @@ pulpino_top pulpino_top(
 .tx_e_2         ( tx_e_2       ),
 
 .btn            ( btn          ),
-.led            ( led          ),
+.led            ( led          )
 
-.tck_i          ( tck_i        ),
-.trstn_i        ( trstn_i      ),
-.tms_i          ( tms_i        ),
-.tdi_i          ( tdi_i        ),
-.tdo_o          ( tdo_o        )
 );
 endmodule

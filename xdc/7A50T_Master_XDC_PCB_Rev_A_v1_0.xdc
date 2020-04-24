@@ -66,8 +66,8 @@
 # ----------------------------------------------------------------------------
 
 ## Clock Signal
-set_property -dict {PACKAGE_PIN N11 IOSTANDARD LVCMOS33} [get_ports sys_clk]
-create_clock -period 5.000 -name SYS_CLK_I -waveform {0.000 2.500} -add [get_ports sys_clk]
+set_property -dict {PACKAGE_PIN N11 IOSTANDARD LVCMOS33} [get_ports clk_200_mhz]
+create_clock -period 5.000 -name SYS_CLK_I -waveform {0.000 2.500} -add [get_ports clk_200_mhz]
 
 # ----------------------------------------------------------------------------
 # USB-UART - Bank 14
@@ -237,10 +237,10 @@ set_property -dict { PACKAGE_PIN T2   IOSTANDARD LVCMOS33 } [get_ports {rst     
 # ----------------------------------------------------------------------------
 # User Push Buttons - Bank 34
 # ----------------------------------------------------------------------------
-#set_property -dict { PACKAGE_PIN N4   IOSTANDARD LVCMOS33 } [get_ports {rst     }];
-set_property -dict { PACKAGE_PIN R2   IOSTANDARD LVCMOS33 } [get_ports {btn     }];
-set_property -dict { PACKAGE_PIN R1   IOSTANDARD LVCMOS33 } [get_ports {rx2_clear}];
-#set_property -dict { PACKAGE_PIN R3   IOSTANDARD LVCMOS33 } [get_ports {PB_RST  }];
+set_property -dict { PACKAGE_PIN N4   IOSTANDARD LVCMOS33 } [get_ports {btn[0]     }];
+set_property -dict { PACKAGE_PIN R2   IOSTANDARD LVCMOS33 } [get_ports {btn[1]     }];
+set_property -dict { PACKAGE_PIN R1   IOSTANDARD LVCMOS33 } [get_ports {btn[2]     }];
+set_property -dict { PACKAGE_PIN R3   IOSTANDARD LVCMOS33 } [get_ports {btn[3]     }];
 
 
 
