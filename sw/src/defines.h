@@ -26,3 +26,4 @@
 #define UART_RX_DATA                        0x00000000
 #define UART_TX_DATA                        0x00000004
 #define UART_TX_BUSY                        0x00000008
+#define UART_READY                          0x0000000C

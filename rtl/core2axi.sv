@@ -100,7 +100,12 @@ always_ff@( posedge clk ) begin
                         if ( core_master.rvalid ) begin
                             mem_rdata_axi   <= core_master.rdata;
                             mem_ready_axi   <= 1'b1;
+                            rd_state        <= 3'h2;
                         end
+                    3'h2: begin
+                        mode            <= 3'b000;
+                        rd_state        <= 3'h0;
+                    end
                 endcase
             end
             3'b001: begin //write single

@@ -1,60 +1,24 @@
 #include "defines.h"
-
-void UART_INTERUPT_HANDLER();
-void ETH1_INTERUPT_HANDLER();
-void ETH2_INTERUPT_HANDLER();
-void delay(int time);
-void delay_ms(int time);
-void delay_us(int time);
-
-void INTERUPT_HANDLER(){
-    int *p = IRQ_ADDR;
-
-    if ( (*p) == 0x00000001 ){
-        UART_INTERUPT_HANDLER();
-    }
-    if ( (*p) == 0x00000002 ){
-        ETH1_INTERUPT_HANDLER();
-    }
-    if ( (*p) == 0x00000004 ){
-        ETH2_INTERUPT_HANDLER();
-    }
-}
+#include "uart_controller.c"
+#include "timer.c"
+#include "led_ctrl.c"
 
 int main(void){
-	int *p = (LED_BASE_ADDR + LED_CTRL);
-
-    *p = 10;
-    
-    int i = 0;
+	
+    unsigned int i;
+    unsigned int data;
+    UART_send_byte(72);
 
     while (1){
-        for(i = 0; i < 255; i = i + 1){
-        delay_ms(1000);
-        *p = i;
+        for ( i = 0; i<255; i++){
+            delay_us(10);
+
+            if ( UART_check() != 0)
+                data = UART_read_data();
+                set_led(data);
+
         }
     }
 }
-void delay_ms(int time){
-    int delay = time*1964;
-    for(int i = 0; i<delay;i++); // ms
-}
-void delay_us(int time){
-    int delay = time << 1;
-    for(int i = 0; i<delay;i++); // ms
-}
-void delay(int time){
-    for(int i = 0; i<time;i++); // 509 ns
-}
 
-void UART_INTERUPT_HANDLER(){
 
-}
-
-void ETH1_INTERUPT_HANDLER(){
-
-}
-
-void ETH2_INTERUPT_HANDLER(){
-
-}

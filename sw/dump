@@ -4,153 +4,202 @@ a.out:     file format elf32-littleriscv
 
 Disassembly of section .text:
 
-00000000 <INTERUPT_HANDLER>:
+00000000 <UART_check_busy>:
    0:	fe010113          	addi	x2,x2,-32
-   4:	00112e23          	sw	x1,28(x2)
-   8:	00812c23          	sw	x8,24(x2)
-   c:	02010413          	addi	x8,x2,32
-  10:	fe042623          	sw	x0,-20(x8)
-  14:	fec42783          	lw	x15,-20(x8)
-  18:	0007a703          	lw	x14,0(x15)
-  1c:	00100793          	addi	x15,x0,1
-  20:	00f71463          	bne	x14,x15,28 <INTERUPT_HANDLER+0x28>
-  24:	1a4000ef          	jal	x1,1c8 <UART_INTERUPT_HANDLER>
-  28:	fec42783          	lw	x15,-20(x8)
-  2c:	0007a703          	lw	x14,0(x15)
-  30:	00200793          	addi	x15,x0,2
-  34:	00f71463          	bne	x14,x15,3c <INTERUPT_HANDLER+0x3c>
-  38:	1ac000ef          	jal	x1,1e4 <ETH1_INTERUPT_HANDLER>
-  3c:	fec42783          	lw	x15,-20(x8)
-  40:	0007a703          	lw	x14,0(x15)
-  44:	00400793          	addi	x15,x0,4
-  48:	00f71463          	bne	x14,x15,50 <INTERUPT_HANDLER+0x50>
-  4c:	1b4000ef          	jal	x1,200 <ETH2_INTERUPT_HANDLER>
-  50:	00000013          	addi	x0,x0,0
-  54:	01c12083          	lw	x1,28(x2)
-  58:	01812403          	lw	x8,24(x2)
-  5c:	02010113          	addi	x2,x2,32
-  60:	00008067          	jalr	x0,0(x1)
+   4:	00812e23          	sw	x8,28(x2)
+   8:	02010413          	addi	x8,x2,32
+   c:	000087b7          	lui	x15,0x8
+  10:	20878793          	addi	x15,x15,520 # 8208 <__global_pointer$+0x6738>
+  14:	fef42623          	sw	x15,-20(x8)
+  18:	fec42783          	lw	x15,-20(x8)
+  1c:	0007a783          	lw	x15,0(x15)
+  20:	00078513          	addi	x10,x15,0
+  24:	01c12403          	lw	x8,28(x2)
+  28:	02010113          	addi	x2,x2,32
+  2c:	00008067          	jalr	x0,0(x1)
 
-00000064 <main>:
-  64:	fe010113          	addi	x2,x2,-32
-  68:	00112e23          	sw	x1,28(x2)
-  6c:	00812c23          	sw	x8,24(x2)
-  70:	02010413          	addi	x8,x2,32
-  74:	000087b7          	lui	x15,0x8
-  78:	30078793          	addi	x15,x15,768 # 8300 <__global_pointer$+0x68e4>
-  7c:	fef42423          	sw	x15,-24(x8)
-  80:	fe842783          	lw	x15,-24(x8)
-  84:	00a00713          	addi	x14,x0,10
-  88:	00e7a023          	sw	x14,0(x15)
-  8c:	fe042623          	sw	x0,-20(x8)
-  90:	fe042623          	sw	x0,-20(x8)
-  94:	0240006f          	jal	x0,b8 <main+0x54>
-  98:	3e800513          	addi	x10,x0,1000
-  9c:	02c000ef          	jal	x1,c8 <delay_ms>
-  a0:	fe842783          	lw	x15,-24(x8)
-  a4:	fec42703          	lw	x14,-20(x8)
-  a8:	00e7a023          	sw	x14,0(x15)
-  ac:	fec42783          	lw	x15,-20(x8)
-  b0:	00178793          	addi	x15,x15,1
-  b4:	fef42623          	sw	x15,-20(x8)
-  b8:	fec42703          	lw	x14,-20(x8)
-  bc:	0fe00793          	addi	x15,x0,254
-  c0:	fce7dce3          	bge	x15,x14,98 <main+0x34>
-  c4:	fcdff06f          	jal	x0,90 <main+0x2c>
+00000030 <UART_read_data>:
+  30:	fe010113          	addi	x2,x2,-32
+  34:	00812e23          	sw	x8,28(x2)
+  38:	02010413          	addi	x8,x2,32
+  3c:	000087b7          	lui	x15,0x8
+  40:	20078793          	addi	x15,x15,512 # 8200 <__global_pointer$+0x6730>
+  44:	fef42623          	sw	x15,-20(x8)
+  48:	fec42783          	lw	x15,-20(x8)
+  4c:	0007a783          	lw	x15,0(x15)
+  50:	00078513          	addi	x10,x15,0
+  54:	01c12403          	lw	x8,28(x2)
+  58:	02010113          	addi	x2,x2,32
+  5c:	00008067          	jalr	x0,0(x1)
 
-000000c8 <delay_ms>:
-  c8:	fd010113          	addi	x2,x2,-48
-  cc:	02812623          	sw	x8,44(x2)
-  d0:	03010413          	addi	x8,x2,48
-  d4:	fca42e23          	sw	x10,-36(x8)
-  d8:	fdc42703          	lw	x14,-36(x8)
-  dc:	00070793          	addi	x15,x14,0
-  e0:	00579793          	slli	x15,x15,0x5
-  e4:	40e787b3          	sub	x15,x15,x14
-  e8:	00279793          	slli	x15,x15,0x2
-  ec:	40e787b3          	sub	x15,x15,x14
-  f0:	00279793          	slli	x15,x15,0x2
-  f4:	40e787b3          	sub	x15,x15,x14
-  f8:	00279793          	slli	x15,x15,0x2
-  fc:	fef42423          	sw	x15,-24(x8)
- 100:	fe042623          	sw	x0,-20(x8)
- 104:	0100006f          	jal	x0,114 <delay_ms+0x4c>
- 108:	fec42783          	lw	x15,-20(x8)
- 10c:	00178793          	addi	x15,x15,1
- 110:	fef42623          	sw	x15,-20(x8)
- 114:	fec42703          	lw	x14,-20(x8)
- 118:	fe842783          	lw	x15,-24(x8)
- 11c:	fef746e3          	blt	x14,x15,108 <delay_ms+0x40>
- 120:	00000013          	addi	x0,x0,0
- 124:	00000013          	addi	x0,x0,0
- 128:	02c12403          	lw	x8,44(x2)
- 12c:	03010113          	addi	x2,x2,48
- 130:	00008067          	jalr	x0,0(x1)
+00000060 <UART_send_byte>:
+  60:	fd010113          	addi	x2,x2,-48
+  64:	02812623          	sw	x8,44(x2)
+  68:	03010413          	addi	x8,x2,48
+  6c:	fca42e23          	sw	x10,-36(x8)
+  70:	000087b7          	lui	x15,0x8
+  74:	20478793          	addi	x15,x15,516 # 8204 <__global_pointer$+0x6734>
+  78:	fef42623          	sw	x15,-20(x8)
+  7c:	fec42783          	lw	x15,-20(x8)
+  80:	fdc42703          	lw	x14,-36(x8)
+  84:	00e7a023          	sw	x14,0(x15)
+  88:	00000013          	addi	x0,x0,0
+  8c:	02c12403          	lw	x8,44(x2)
+  90:	03010113          	addi	x2,x2,48
+  94:	00008067          	jalr	x0,0(x1)
 
-00000134 <delay_us>:
- 134:	fd010113          	addi	x2,x2,-48
- 138:	02812623          	sw	x8,44(x2)
- 13c:	03010413          	addi	x8,x2,48
- 140:	fca42e23          	sw	x10,-36(x8)
- 144:	fdc42783          	lw	x15,-36(x8)
- 148:	00179793          	slli	x15,x15,0x1
- 14c:	fef42423          	sw	x15,-24(x8)
- 150:	fe042623          	sw	x0,-20(x8)
- 154:	0100006f          	jal	x0,164 <delay_us+0x30>
- 158:	fec42783          	lw	x15,-20(x8)
- 15c:	00178793          	addi	x15,x15,1
- 160:	fef42623          	sw	x15,-20(x8)
- 164:	fec42703          	lw	x14,-20(x8)
- 168:	fe842783          	lw	x15,-24(x8)
- 16c:	fef746e3          	blt	x14,x15,158 <delay_us+0x24>
- 170:	00000013          	addi	x0,x0,0
- 174:	00000013          	addi	x0,x0,0
- 178:	02c12403          	lw	x8,44(x2)
- 17c:	03010113          	addi	x2,x2,48
- 180:	00008067          	jalr	x0,0(x1)
+00000098 <UART_send_word>:
+  98:	fd010113          	addi	x2,x2,-48
+  9c:	02812623          	sw	x8,44(x2)
+  a0:	03010413          	addi	x8,x2,48
+  a4:	fca42e23          	sw	x10,-36(x8)
+  a8:	000087b7          	lui	x15,0x8
+  ac:	20478793          	addi	x15,x15,516 # 8204 <__global_pointer$+0x6734>
+  b0:	fef42623          	sw	x15,-20(x8)
+  b4:	fdc42783          	lw	x15,-36(x8)
+  b8:	01879713          	slli	x14,x15,0x18
+  bc:	fec42783          	lw	x15,-20(x8)
+  c0:	00e7a023          	sw	x14,0(x15)
+  c4:	fdc42783          	lw	x15,-36(x8)
+  c8:	01079713          	slli	x14,x15,0x10
+  cc:	fec42783          	lw	x15,-20(x8)
+  d0:	00e7a023          	sw	x14,0(x15)
+  d4:	fdc42783          	lw	x15,-36(x8)
+  d8:	00879713          	slli	x14,x15,0x8
+  dc:	fec42783          	lw	x15,-20(x8)
+  e0:	00e7a023          	sw	x14,0(x15)
+  e4:	fec42783          	lw	x15,-20(x8)
+  e8:	fdc42703          	lw	x14,-36(x8)
+  ec:	00e7a023          	sw	x14,0(x15)
+  f0:	00000013          	addi	x0,x0,0
+  f4:	02c12403          	lw	x8,44(x2)
+  f8:	03010113          	addi	x2,x2,48
+  fc:	00008067          	jalr	x0,0(x1)
 
-00000184 <delay>:
- 184:	fd010113          	addi	x2,x2,-48
- 188:	02812623          	sw	x8,44(x2)
- 18c:	03010413          	addi	x8,x2,48
- 190:	fca42e23          	sw	x10,-36(x8)
- 194:	fe042623          	sw	x0,-20(x8)
- 198:	0100006f          	jal	x0,1a8 <delay+0x24>
- 19c:	fec42783          	lw	x15,-20(x8)
- 1a0:	00178793          	addi	x15,x15,1
- 1a4:	fef42623          	sw	x15,-20(x8)
- 1a8:	fec42703          	lw	x14,-20(x8)
+00000100 <UART_check>:
+ 100:	fe010113          	addi	x2,x2,-32
+ 104:	00812e23          	sw	x8,28(x2)
+ 108:	02010413          	addi	x8,x2,32
+ 10c:	000087b7          	lui	x15,0x8
+ 110:	20c78793          	addi	x15,x15,524 # 820c <__global_pointer$+0x673c>
+ 114:	fef42623          	sw	x15,-20(x8)
+ 118:	fec42783          	lw	x15,-20(x8)
+ 11c:	0007a783          	lw	x15,0(x15)
+ 120:	00078513          	addi	x10,x15,0
+ 124:	01c12403          	lw	x8,28(x2)
+ 128:	02010113          	addi	x2,x2,32
+ 12c:	00008067          	jalr	x0,0(x1)
+
+00000130 <delay_ms>:
+ 130:	fd010113          	addi	x2,x2,-48
+ 134:	02812623          	sw	x8,44(x2)
+ 138:	03010413          	addi	x8,x2,48
+ 13c:	fca42e23          	sw	x10,-36(x8)
+ 140:	fdc42703          	lw	x14,-36(x8)
+ 144:	00070793          	addi	x15,x14,0
+ 148:	00579793          	slli	x15,x15,0x5
+ 14c:	40e787b3          	sub	x15,x15,x14
+ 150:	00279793          	slli	x15,x15,0x2
+ 154:	40e787b3          	sub	x15,x15,x14
+ 158:	00279793          	slli	x15,x15,0x2
+ 15c:	40e787b3          	sub	x15,x15,x14
+ 160:	00179793          	slli	x15,x15,0x1
+ 164:	fef42423          	sw	x15,-24(x8)
+ 168:	fe042623          	sw	x0,-20(x8)
+ 16c:	0100006f          	jal	x0,17c <delay_ms+0x4c>
+ 170:	fec42783          	lw	x15,-20(x8)
+ 174:	00178793          	addi	x15,x15,1
+ 178:	fef42623          	sw	x15,-20(x8)
+ 17c:	fec42703          	lw	x14,-20(x8)
+ 180:	fe842783          	lw	x15,-24(x8)
+ 184:	fef746e3          	blt	x14,x15,170 <delay_ms+0x40>
+ 188:	00000013          	addi	x0,x0,0
+ 18c:	00000013          	addi	x0,x0,0
+ 190:	02c12403          	lw	x8,44(x2)
+ 194:	03010113          	addi	x2,x2,48
+ 198:	00008067          	jalr	x0,0(x1)
+
+0000019c <delay_us>:
+ 19c:	fd010113          	addi	x2,x2,-48
+ 1a0:	02812623          	sw	x8,44(x2)
+ 1a4:	03010413          	addi	x8,x2,48
+ 1a8:	fca42e23          	sw	x10,-36(x8)
  1ac:	fdc42783          	lw	x15,-36(x8)
- 1b0:	fef746e3          	blt	x14,x15,19c <delay+0x18>
- 1b4:	00000013          	addi	x0,x0,0
- 1b8:	00000013          	addi	x0,x0,0
- 1bc:	02c12403          	lw	x8,44(x2)
- 1c0:	03010113          	addi	x2,x2,48
- 1c4:	00008067          	jalr	x0,0(x1)
+ 1b0:	00179793          	slli	x15,x15,0x1
+ 1b4:	fef42423          	sw	x15,-24(x8)
+ 1b8:	fe042623          	sw	x0,-20(x8)
+ 1bc:	0100006f          	jal	x0,1cc <delay_us+0x30>
+ 1c0:	fec42783          	lw	x15,-20(x8)
+ 1c4:	00178793          	addi	x15,x15,1
+ 1c8:	fef42623          	sw	x15,-20(x8)
+ 1cc:	fec42703          	lw	x14,-20(x8)
+ 1d0:	fe842783          	lw	x15,-24(x8)
+ 1d4:	fef746e3          	blt	x14,x15,1c0 <delay_us+0x24>
+ 1d8:	00000013          	addi	x0,x0,0
+ 1dc:	00000013          	addi	x0,x0,0
+ 1e0:	02c12403          	lw	x8,44(x2)
+ 1e4:	03010113          	addi	x2,x2,48
+ 1e8:	00008067          	jalr	x0,0(x1)
 
-000001c8 <UART_INTERUPT_HANDLER>:
- 1c8:	ff010113          	addi	x2,x2,-16
- 1cc:	00812623          	sw	x8,12(x2)
- 1d0:	01010413          	addi	x8,x2,16
- 1d4:	00000013          	addi	x0,x0,0
- 1d8:	00c12403          	lw	x8,12(x2)
- 1dc:	01010113          	addi	x2,x2,16
- 1e0:	00008067          	jalr	x0,0(x1)
+000001ec <delay>:
+ 1ec:	fd010113          	addi	x2,x2,-48
+ 1f0:	02812623          	sw	x8,44(x2)
+ 1f4:	03010413          	addi	x8,x2,48
+ 1f8:	fca42e23          	sw	x10,-36(x8)
+ 1fc:	fe042623          	sw	x0,-20(x8)
+ 200:	0100006f          	jal	x0,210 <delay+0x24>
+ 204:	fec42783          	lw	x15,-20(x8)
+ 208:	00178793          	addi	x15,x15,1
+ 20c:	fef42623          	sw	x15,-20(x8)
+ 210:	fec42703          	lw	x14,-20(x8)
+ 214:	fdc42783          	lw	x15,-36(x8)
+ 218:	fef746e3          	blt	x14,x15,204 <delay+0x18>
+ 21c:	00000013          	addi	x0,x0,0
+ 220:	00000013          	addi	x0,x0,0
+ 224:	02c12403          	lw	x8,44(x2)
+ 228:	03010113          	addi	x2,x2,48
+ 22c:	00008067          	jalr	x0,0(x1)
 
-000001e4 <ETH1_INTERUPT_HANDLER>:
- 1e4:	ff010113          	addi	x2,x2,-16
- 1e8:	00812623          	sw	x8,12(x2)
- 1ec:	01010413          	addi	x8,x2,16
- 1f0:	00000013          	addi	x0,x0,0
- 1f4:	00c12403          	lw	x8,12(x2)
- 1f8:	01010113          	addi	x2,x2,16
- 1fc:	00008067          	jalr	x0,0(x1)
+00000230 <set_led>:
+ 230:	fd010113          	addi	x2,x2,-48
+ 234:	02812623          	sw	x8,44(x2)
+ 238:	03010413          	addi	x8,x2,48
+ 23c:	fca42e23          	sw	x10,-36(x8)
+ 240:	000087b7          	lui	x15,0x8
+ 244:	30078793          	addi	x15,x15,768 # 8300 <__global_pointer$+0x6830>
+ 248:	fef42623          	sw	x15,-20(x8)
+ 24c:	fec42783          	lw	x15,-20(x8)
+ 250:	fdc42703          	lw	x14,-36(x8)
+ 254:	00e7a023          	sw	x14,0(x15)
+ 258:	00000013          	addi	x0,x0,0
+ 25c:	02c12403          	lw	x8,44(x2)
+ 260:	03010113          	addi	x2,x2,48
+ 264:	00008067          	jalr	x0,0(x1)
 
-00000200 <ETH2_INTERUPT_HANDLER>:
- 200:	ff010113          	addi	x2,x2,-16
- 204:	00812623          	sw	x8,12(x2)
- 208:	01010413          	addi	x8,x2,16
- 20c:	00000013          	addi	x0,x0,0
- 210:	00c12403          	lw	x8,12(x2)
- 214:	01010113          	addi	x2,x2,16
- 218:	00008067          	jalr	x0,0(x1)
+00000268 <main>:
+ 268:	fe010113          	addi	x2,x2,-32
+ 26c:	00112e23          	sw	x1,28(x2)
+ 270:	00812c23          	sw	x8,24(x2)
+ 274:	02010413          	addi	x8,x2,32
+ 278:	04800513          	addi	x10,x0,72
+ 27c:	de5ff0ef          	jal	x1,60 <UART_send_byte>
+ 280:	fe042623          	sw	x0,-20(x8)
+ 284:	03c0006f          	jal	x0,2c0 <main+0x58>
+ 288:	00a00513          	addi	x10,x0,10
+ 28c:	f11ff0ef          	jal	x1,19c <delay_us>
+ 290:	e71ff0ef          	jal	x1,100 <UART_check>
+ 294:	00050793          	addi	x15,x10,0
+ 298:	00078863          	beq	x15,x0,2a8 <main+0x40>
+ 29c:	d95ff0ef          	jal	x1,30 <UART_read_data>
+ 2a0:	00050793          	addi	x15,x10,0
+ 2a4:	fef42423          	sw	x15,-24(x8)
+ 2a8:	fe842783          	lw	x15,-24(x8)
+ 2ac:	00078513          	addi	x10,x15,0
+ 2b0:	f81ff0ef          	jal	x1,230 <set_led>
+ 2b4:	fec42783          	lw	x15,-20(x8)
+ 2b8:	00178793          	addi	x15,x15,1
+ 2bc:	fef42623          	sw	x15,-20(x8)
+ 2c0:	fec42703          	lw	x14,-20(x8)
+ 2c4:	0fe00793          	addi	x15,x0,254
+ 2c8:	fce7f0e3          	bgeu	x15,x14,288 <main+0x20>
+ 2cc:	fb5ff06f          	jal	x0,280 <main+0x18>

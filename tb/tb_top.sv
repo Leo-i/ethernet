@@ -35,10 +35,8 @@ initial begin
     rst     <= 1'b1;
     #(100*`CLK_PERIOD);
     rst     <= 1'b0;
-    #(50000*`CLK_PERIOD);
-    rst     <= 1'b1;
-    #(100*`CLK_PERIOD);
-    rst     <= 1'b0;
+
+
 end
 
 top top(

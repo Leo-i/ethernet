@@ -12,17 +12,17 @@
 module peripherals
   (
     input                     clk,
-    // input                     clk_50_mhz,
+    input                     clk_50_mhz,
     // input                     clk_25_mhz,
-    // input                     resetn,
+    input                     resetn,
 
     AXI_LITE.slave           core_master,
 
     // RMII.master               rmii_1,
     // RMII.master               rmii_2,
 
-    // output                    uart_tx,
-    // input                     uart_rx,
+    output                    uart_tx,
+    input                     uart_rx,
 
     output       [7:0]        led
 
@@ -32,31 +32,31 @@ module peripherals
     // input                     eoi
 );
 
-// AXI_LITE axi_led(clk,resetn);
-// AXI_LITE axi_uart(clk,resetn);
-// AXI_LITE axi_ethernet_1(clk,resetn);
-// AXI_LITE axi_ethernet_2(clk,resetn);
+AXI_LITE axi_led(clk,resetn);
+AXI_LITE axi_uart(clk,resetn);
+AXI_LITE axi_ethernet_1(clk,resetn);
+AXI_LITE axi_ethernet_2(clk,resetn);
 
-// axi_interconnect axi_interconnect(
-// .axi                 ( core_master       ),
-// .axi_led             ( axi_led           ),
-// .axi_uart            ( axi_uart          ),
-// .axi_ethernet_1      ( axi_ethernet_1    ),
-// .axi_ethernet_2      ( axi_ethernet_2    )  
-// );
+axi_interconnect axi_interconnect(
+.axi                 ( core_master       ),
+.axi_led             ( axi_led           ),
+.axi_uart            ( axi_uart          ),
+.axi_ethernet_1      ( axi_ethernet_1    ),
+.axi_ethernet_2      ( axi_ethernet_2    )  
+);
 
 led_ctrl led_ctrl(
-.axi                  ( core_master      ),
+.axi                  ( axi_led          ),
 .led                  ( led              )
 );
 
-// AXI_uart AXI_uart(
-// .clk_50_mhz           ( clk_50_mhz       ),
-// .axi                  ( axi_uart         ),
-// .uart_tx              ( uart_tx          ),
-// .uart_rx              ( uart_tx          ),
-// .rx_ready_int         ( uart_int         )
-// );
+AXI_uart AXI_uart(
+.clk_50_mhz           ( clk_50_mhz       ),
+.axi                  ( axi_uart         ),
+.uart_tx              ( uart_tx          ),
+.uart_rx              ( uart_tx          ),
+.rx_ready_int         ( uart_int         )
+);
 
 // AXI_ethernet AXI_ethernet_1(
 // .clk_25_mhz          ( clk_25_mhz       ),

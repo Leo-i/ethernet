@@ -1,3 +1,4 @@
+  
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -105,15 +106,18 @@ end
 
 initial begin
     #(`CLOCK_PERIOD_100_MHZ*220)
-    irq <= 32'hFFFF;
-
+    irq <= 32'h800;
+    #(`CLOCK_PERIOD_100_MHZ*8)
+    irq <= 32'h000;
 end
 
 picorv32 #(
 
-.PROGADDR_RESET             ( `PROGADDR           ),
+.PROGADDR_RESET             ( 32'h0             ),
 .REGS_INIT_ZERO             ( 1                  ),
-.STACKADDR                  ( `STACKADDR         )
+.STACKADDR                  ( `STACKADDR         ),
+.ENABLE_IRQ                 ( 1                 ),
+.LATCHED_IRQ                ( 32'h00000000      )
 ) core (
 .clk                        ( clk             ),
 .resetn                     ( resetn          ),

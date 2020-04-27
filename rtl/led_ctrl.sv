@@ -49,7 +49,7 @@ always@( posedge axi.aclk ) begin
 
             4'h1: 
                 if ( axi.wvalid )
-                    case ( write_addr - `LED_BASE_ADDR )
+                    case ( write_addr )
                         `LED_CTRL : begin
                             led         <= axi.wdata;
                             axi.wready  <= 1'b1;
