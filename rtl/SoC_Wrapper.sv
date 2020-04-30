@@ -31,16 +31,16 @@ peripherals peripherals(
 .clk            ( clk         ),
 .resetn         ( resetn      ),
 .clk_50_mhz     ( clk_50_mhz  ),
-// .clk_25_mhz     ( clk_25_mhz  ),
+.clk_25_mhz     ( clk_25_mhz  ),
 .core_master    ( core_master ),
-// .rmii_1         ( rmii_1      ),
-// .rmii_2         ( rmii_2      ),
+.rmii_1         ( rmii_1      ),
+.rmii_2         ( rmii_2      ),
 .uart_tx        ( uart_tx     ),
 .uart_rx        ( uart_rx     ),
-.led            ( led         )
-// .btn            ( btn         ),
-// .irq            ( irq         ),
-// .eoi            ( eoi         )
+.led            ( led         ),
+.btn            ( btn         ),
+.irq            ( irq         ),
+.eoi            ( eoi         )
 );
 
 endmodule

@@ -13,29 +13,37 @@ module peripherals
   (
     input                     clk,
     input                     clk_50_mhz,
-    // input                     clk_25_mhz,
+    input                     clk_25_mhz,
     input                     resetn,
 
     AXI_LITE.slave           core_master,
 
-    // RMII.master               rmii_1,
-    // RMII.master               rmii_2,
+    RMII.master               rmii_1,
+    RMII.master               rmii_2,
 
     output                    uart_tx,
     input                     uart_rx,
 
-    output       [7:0]        led
+    output       [7:0]        led,
 
-    // input        [3:0]        btn,
+    input        [3:0]        btn,
 
-    // output       [31:0]       irq,
-    // input                     eoi
+    output       [31:0]       irq,
+    input                     eoi
 );
 
 AXI_LITE axi_led(clk,resetn);
 AXI_LITE axi_uart(clk,resetn);
 AXI_LITE axi_ethernet_1(clk,resetn);
 AXI_LITE axi_ethernet_2(clk,resetn);
+
+// irq_module irq_module(
+// .btn        ( btn       ),
+// .uart_int   ( uart_int  ),
+// .eth_1_int  ( eth_1_int ),
+// .eth_2_int  ( eth_2_int ),
+// .irq        ( irq       )
+// );
 
 axi_interconnect axi_interconnect(
 .axi                 ( core_master       ),
@@ -54,25 +62,25 @@ AXI_uart AXI_uart(
 .clk_50_mhz           ( clk_50_mhz       ),
 .axi                  ( axi_uart         ),
 .uart_tx              ( uart_tx          ),
-.uart_rx              ( uart_tx          ),
-.rx_ready_int         ( uart_int         )
+.uart_rx              ( uart_rx          ),
+.rdy                  ( uart_int         )
 );
 
-// AXI_ethernet AXI_ethernet_1(
-// .clk_25_mhz          ( clk_25_mhz       ),
-// .clk_50_mhz          ( clk_50_mhz       ),
-// .axi                 ( axi_ethernet_1   ),
-// .rmii                ( rmii_1           ),
-// .rx_ready_int        ( eth_1_int        )
-// );
+AXI_ethernet AXI_ethernet_1(
+.clk_25_mhz          ( clk_25_mhz       ),
+.clk_50_mhz          ( clk_50_mhz       ),
+.axi                 ( axi_ethernet_1   ),
+.rmii                ( rmii_1           ),
+.rx_ready_int        ( eth_1_int        )
+);
 
-// AXI_ethernet AXI_ethernet_2(
-// .clk_25_mhz          ( clk_25_mhz       ),
-// .clk_50_mhz          ( clk_50_mhz       ),
-// .axi                 ( axi_ethernet_2   ),
-// .rmii                ( rmii_2           ),
-// .rx_ready_int        ( eth_2_int        )
-// );
+AXI_ethernet AXI_ethernet_2(
+.clk_25_mhz          ( clk_25_mhz       ),
+.clk_50_mhz          ( clk_50_mhz       ),
+.axi                 ( axi_ethernet_2   ),
+.rmii                ( rmii_2           ),
+.rx_ready_int        ( eth_2_int        )
+);
 
 
 endmodule

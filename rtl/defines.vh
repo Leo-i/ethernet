@@ -9,6 +9,7 @@
 
 `define ETHERNET_TX_DATA_IN                 32'h00000000
 `define ETHERNET_TX_DONE                    32'h00000004
+
 `define ETHERNET_RX_DATA                    32'h00000008
 `define ETHERNET_RX_EMPTY                   32'h0000000C
 `define ETHERNET_RX_DATA_COUNT              32'h00000010
@@ -27,3 +28,4 @@
 `define UART_RX_DATA                        32'h00000000
 `define UART_TX_DATA                        32'h00000004
 `define UART_TX_BUSY                        32'h00000008
+`define UART_READY                          32'h0000000C

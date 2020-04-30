@@ -10,16 +10,16 @@ int UART_read_data(){
     return (int)*p;
 }
 
-void UART_send_byte(int data){
+void UART_send_byte(int data){ 
     int *p = (UART_BASE_ADDR + UART_TX_DATA);
     *p = data;
 }
 
 void UART_send_word(int data){
     int *p = (UART_BASE_ADDR + UART_TX_DATA);
-    *p = data << 24;
-    *p = data << 16;
-    *p = data << 8;
+    *p = data >> 24;
+    *p = data >> 16;
+    *p = data >> 8;
     *p = data;
 }
 

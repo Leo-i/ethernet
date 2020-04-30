@@ -105,132 +105,24 @@ assign axi_uart.arvalid = (rd_addr == `UART_BASE_ADDR ) ? axi.arvalid : 0;
 assign axi_uart.araddr  = (rd_addr == `UART_BASE_ADDR ) ? axi.araddr - `UART_BASE_ADDR  : 0;
 assign axi_uart.rready  = (rd_addr == `UART_BASE_ADDR ) ? axi.rready  : 0;
 
-/*
-always@(*) begin
-    
-    case ( wr_addr )
-        `ETHERNET_1_BASE_ADDR: begin 
-            axi_led.awvalid             = 1'b0;
-            axi_uart.awvalid            = 1'b0;
-            axi_ethernet_1.awvalid      = axi.awvalid;
-            axi_ethernet_2.awvalid      = 1'b0;
+// ethernet 1
+assign axi_ethernet_1.awvalid = (wr_addr == `ETHERNET_1_BASE_ADDR ) ? axi.awvalid : 0;
+assign axi_ethernet_1.awaddr  = (wr_addr == `ETHERNET_1_BASE_ADDR ) ? axi.awaddr - `ETHERNET_1_BASE_ADDR  : 0;
+assign axi_ethernet_1.wdata   = (wr_addr == `ETHERNET_1_BASE_ADDR ) ? axi.wdata   : 0;
+assign axi_ethernet_1.wlast   = (wr_addr == `ETHERNET_1_BASE_ADDR ) ? axi.wlast   : 0;
+assign axi_ethernet_1.wvalid  = (wr_addr == `ETHERNET_1_BASE_ADDR ) ? axi.wvalid  : 0;
+assign axi_ethernet_1.arvalid = (rd_addr == `ETHERNET_1_BASE_ADDR ) ? axi.arvalid : 0;  
+assign axi_ethernet_1.araddr  = (rd_addr == `ETHERNET_1_BASE_ADDR ) ? axi.araddr - `ETHERNET_1_BASE_ADDR  : 0;
+assign axi_ethernet_1.rready  = (rd_addr == `ETHERNET_1_BASE_ADDR ) ? axi.rready  : 0;
 
-            axi.awready                 = axi_ethernet_1.awready;
-            axi.wready                  = axi_ethernet_1.wready ;
-            axi.bresp                   = axi_ethernet_1.bresp  ;
-            axi.bvalid                  = axi_ethernet_1.bvalid ;
-            axi.bready                  = axi_ethernet_1.bready ;
-            axi_ethernet_1.awaddr       = axi.awaddr - `ETHERNET_1_BASE_ADDR ;
-            axi_ethernet_1.wdata        = axi.wdata  ;
-            axi_ethernet_1.wlast        = axi.wlast  ;
-            axi_ethernet_1.wvalid       = axi.wvalid ;
-        end
-        `ETHERNET_2_BASE_ADDR: begin 
-            axi_led.awvalid             = 1'b0;
-            axi_uart.awvalid            = 1'b0;
-            axi_ethernet_1.awvalid      = 1'b0;
-            axi_ethernet_2.awvalid      = axi.awvalid;
+// ethernet 2
+assign axi_ethernet_2.awvalid = (wr_addr == `ETHERNET_2_BASE_ADDR ) ? axi.awvalid : 0;
+assign axi_ethernet_2.awaddr  = (wr_addr == `ETHERNET_2_BASE_ADDR ) ? axi.awaddr - `ETHERNET_2_BASE_ADDR  : 0;
+assign axi_ethernet_2.wdata   = (wr_addr == `ETHERNET_2_BASE_ADDR ) ? axi.wdata   : 0;
+assign axi_ethernet_2.wlast   = (wr_addr == `ETHERNET_2_BASE_ADDR ) ? axi.wlast   : 0;
+assign axi_ethernet_2.wvalid  = (wr_addr == `ETHERNET_2_BASE_ADDR ) ? axi.wvalid  : 0;
+assign axi_ethernet_2.arvalid = (rd_addr == `ETHERNET_2_BASE_ADDR ) ? axi.arvalid : 0;  
+assign axi_ethernet_2.araddr  = (rd_addr == `ETHERNET_2_BASE_ADDR ) ? axi.araddr - `ETHERNET_2_BASE_ADDR  : 0;
+assign axi_ethernet_2.rready  = (rd_addr == `ETHERNET_2_BASE_ADDR ) ? axi.rready  : 0;
 
-            axi.awready                 = axi_ethernet_2.awready;
-            axi.wready                  = axi_ethernet_2.wready ;
-            axi.bresp                   = axi_ethernet_2.bresp  ;
-            axi.bvalid                  = axi_ethernet_2.bvalid ;
-            axi.bready                  = axi_ethernet_2.bready ;
-            axi_ethernet_2.awaddr       = axi.awaddr - `ETHERNET_2_BASE_ADDR ;
-            axi_ethernet_2.wdata        = axi.wdata  ;
-            axi_ethernet_2.wlast        = axi.wlast  ;
-            axi_ethernet_2.wvalid       = axi.wvalid ;
-        end
-        `UART_BASE_ADDR:       begin 
-            axi_led.awvalid             = 1'b0;
-            axi_uart.awvalid            = axi.awvalid;
-            axi_ethernet_1.awvalid      = 1'b0;
-            axi_ethernet_2.awvalid      = 1'b0;
-
-            axi.awready                 = axi_uart.awready;
-            axi.wready                  = axi_uart.wready ;
-            axi.bresp                   = axi_uart.bresp  ;
-            axi.bvalid                  = axi_uart.bvalid ;
-            axi.bready                  = axi_uart.bready ;
-            axi_uart.awaddr             = axi.awaddr - `UART_BASE_ADDR ;
-            axi_uart.wdata              = axi.wdata  ;
-            axi_uart.wlast              = axi.wlast  ;
-            axi_uart.wvalid             = axi.wvalid ;
-        end
-        `LED_BASE_ADDR:        begin 
-            axi_led.awvalid             = axi.awvalid;;
-            axi_uart.awvalid            = 1'b0;
-            axi_ethernet_1.awvalid      = 1'b0;
-            axi_ethernet_2.awvalid      = 1'b0;
-
-            axi.awready                 = axi_led.awready;
-            axi.wready                  = axi_led.wready ;
-            axi.bresp                   = axi_led.bresp  ;
-            axi.bvalid                  = axi_led.bvalid ;
-            axi.bready                  = axi_led.bready ;
-            axi_led.awaddr              = axi.awaddr - `LED_BASE_ADDR ;
-            axi_led.wdata               = axi.wdata  ;
-            axi_led.wlast               = axi.wlast  ;
-            axi_led.wvalid              = axi.wvalid ;
-        end
-        default: ;
-    endcase
-
-    case ( rd_addr )
-        `ETHERNET_1_BASE_ADDR: begin 
-            axi_led.arvalid             = 1'b0;
-            axi_uart.arvalid            = 1'b0;
-            axi_ethernet_1.arvalid      = axi.arvalid;
-            axi_ethernet_2.arvalid      = 1'b0;
-
-            axi.arready                 = axi_ethernet_1.arready;
-            axi.rdata                   = axi_ethernet_1.rdata  ;
-            axi.rlast                   = axi_ethernet_1.rlast  ;
-            axi.rvalid                  = axi_ethernet_1.rvalid ;
-            axi_ethernet_1.araddr       = axi.araddr - `ETHERNET_1_BASE_ADDR ;
-            axi_ethernet_1.rready       = axi.rready ;
-        end
-        `ETHERNET_2_BASE_ADDR: begin 
-            axi_led.arvalid             = 1'b0;
-            axi_uart.arvalid            = 1'b0;
-            axi_ethernet_1.arvalid      = 1'b0;
-            axi_ethernet_2.arvalid      = axi.arvalid;
-
-            axi.arready                 = axi_ethernet_2.arready;
-            axi.rdata                   = axi_ethernet_2.rdata  ;
-            axi.rlast                   = axi_ethernet_2.rlast  ;
-            axi.rvalid                  = axi_ethernet_2.rvalid ;
-            axi_ethernet_2.araddr       = axi.araddr - `ETHERNET_2_BASE_ADDR ;
-            axi_ethernet_2.rready       = axi.rready ;
-        end
-        `UART_BASE_ADDR:       begin 
-            axi_led.arvalid             = 1'b0;
-            axi_uart.arvalid            = axi.arvalid;
-            axi_ethernet_1.arvalid      = 1'b0;
-            axi_ethernet_2.arvalid      = 1'b0;
-
-            axi.arready                 = axi_uart.arready;
-            axi.rdata                   = axi_uart.rdata  ;
-            axi.rlast                   = axi_uart.rlast  ;
-            axi.rvalid                  = axi_uart.rvalid ;
-            axi_uart.araddr             = axi.araddr - `UART_BASE_ADDR ;
-            axi_uart.rready             = axi.rready ;
-        end
-        `LED_BASE_ADDR:        begin 
-            axi_led.arvalid             = axi.arvalid;;
-            axi_uart.arvalid            = 1'b0;
-            axi_ethernet_1.arvalid      = 1'b0;
-            axi_ethernet_2.arvalid      = 1'b0;
-
-            axi.arready                 = axi_led.arready;
-            axi.rdata                   = axi_led.rdata  ;
-            axi.rlast                   = axi_led.rlast  ;
-            axi.rvalid                  = axi_led.rvalid ;
-            axi_led.araddr              = axi.araddr - `LED_BASE_ADDR;
-            axi_led.rready              = axi.rready ;
-        end
-        default: ;
-    endcase
-end
-*/
 endmodule

@@ -77,7 +77,7 @@ clk_wiz_0 pll(
 assign rst_n = !rst;
 
 SoC_Wrapper SoC_Wrapper(
-.clk                  ( clk_50_mhz     ),
+.clk                  ( clk_100_mhz     ),
 .clk_50_mhz           ( clk_50_mhz      ),
 .clk_25_mhz           ( clk_25_mhz      ),
 .resetn               ( rst_n           ),
