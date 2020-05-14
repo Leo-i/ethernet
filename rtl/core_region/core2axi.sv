@@ -212,13 +212,13 @@ always_ff@( posedge clk ) begin
             3'b101: begin //read brust
                 case ( rd_state )
 
-                    3'h0:begin
+                    3'h0:begin //init
                         mem_ready_axi       <= 1'b0;
                         core_master.rready  <= 1'b0;
                         if ( mem_valid_axi )
                             rd_state        <= 3'h1;
                     end
-                    3'h1: begin
+                    3'h1: begin //send addr
                         if ( core_master.arready ) begin
                             rd_state            <= 3'h2;
                             core_master.arvalid <= 1'b0;
@@ -228,33 +228,46 @@ always_ff@( posedge clk ) begin
                             core_master.arvalid <= 1'b1;
                         end
                     end
-                    3'h2: begin
+                    3'h2: begin //rdata
                         if ( core_master.rvalid ) begin
                             mem_rdata_axi       <= core_master.rdata;
                             mem_ready_axi       <= 1'b1;
                             core_master.rready  <= 1'b0;
                             if ( core_master.rlast )
-                                rd_state        <= 3'h4;
+                                rd_state        <= 3'h7;
                             else
                                 rd_state        <= 3'h5;
                         end
                     end
-                    3'h3: begin
+                    3'h3: begin//send data to core
                         if ( mem_valid_axi ) begin
                             rd_state            <= 3'h2;
                             core_master.rready  <= 1'b1;
                             
                         end
                     end
-                    3'h5: begin
+                    3'h5: begin//wait
                         mem_ready_axi       <= 1'b0;
                         if ( !mem_valid_axi)
                             rd_state            <= 3'h3;
                     end
-                    3'h4: begin
+                    3'h7: begin
+                        rd_state        <= 3'h6;
+                        mem_ready_axi   <= 1'b0;
+                    end
+                    3'h6: begin
+                        if ( mem_valid_axi ) begin
+                            mem_rdata_axi   <= brust_begin;
+                            mem_ready_axi   <= 1'b1;
+                            rd_state        <= 3'h4;
+                        end else begin
+                            mem_ready_axi   <= 1'b0;
+                        end
+                    end
+                    3'h4: begin//end transaction
                         rd_state        <= 3'h0;
                         mode            <= 3'b000;
-                        mem_ready_axi   <= 1'b1;
+                        mem_ready_axi   <= 1'b0;
                     end
                 endcase
             end

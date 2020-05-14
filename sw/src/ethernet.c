@@ -3,7 +3,7 @@
 void ETHERNET_send_data(
                         unsigned int module,
                         unsigned int *data,
-                        unsigned int data_count )
+                        unsigned int data_count ) // bytes count
 {
     int *p;
     if ( module == 1)
@@ -15,20 +15,21 @@ void ETHERNET_send_data(
     *brust_en = 64;
 
     int i;
+    int c_data_count = data_count >> 2;
 
-    for (i = 0; i< data_count; i++){
+    for (i = 0; i <= c_data_count; i++){
 
-        if ( i == ( data_count - 1) )
+        if ( i == c_data_count )
             *brust_en = data[i];           //disable brust and close transaction
         else
             *p = data[i];
     }
+    
 }
 
 void ETHERNET_read_data(
                         unsigned int module,
-                        unsigned int *data,
-                        unsigned int data_count )
+                        unsigned int *data)
 {
     int *p;
     if ( module == 1)
@@ -40,8 +41,16 @@ void ETHERNET_read_data(
     
     int i = *brust_en;//enable brust mode
 
-    for (i = 0; i< data_count; i++){
-        data[i] = *p;
+    int iteration = 0;
+    int r_data;
+
+    while (1){
+        r_data = *p;
+        if ( r_data ==  0xA0A00B08)
+            return;
+
+        data[iteration] = r_data;
+        iteration = iteration + 1;
     }
 }
 

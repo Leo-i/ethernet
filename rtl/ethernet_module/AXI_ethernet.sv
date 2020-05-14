@@ -91,8 +91,6 @@ always@( posedge axi.aclk ) begin
                     read_addr    <= axi.araddr;
                     axi.arready <= 1'b1;
                     rd_state    <= 4'h1;
-                    // if ( axi.araddr == `ETHERNET_RX_DATA)
-                    //     rx_read_en  <= 1'b1;
                 end else
                     axi.rvalid  <= 1'b0;
 
@@ -108,23 +106,31 @@ always@( posedge axi.aclk ) begin
                         end
                         `ETHERNET_RX_DATA: begin
 
-                            if ( rx_data_count < (counter + 15'h8) ) begin
-                                
-                                rx_read_en      <= 1'b0;
-                                counter         <= 16'h0;
-                                rd_state        <= 4'h2;
-                                rx_clear        <= 1'b1;
+                            if ( rx_ready ) 
+
+                                if ( rx_data_count < counter ) begin
+                                    rx_read_en      <= 1'b0;
+                                    counter         <= 16'h0;
+                                    rd_state        <= 4'h2;
+                                    rx_clear        <= 1'b1;
+                                    axi.rvalid      <= 1'b1;
+                                    axi.rlast       <= 1'b1;
+                                    rx_ready_int    <= 1'b0;
+                                    axi.rdata       <= rx_data;
+                                end else begin
+                                    counter         <= counter + 4'h4;
+                                    axi.rlast       <= 1'b0;
+                                    axi.rvalid      <= 1'b1;
+                                    axi.rdata       <= rx_data;
+                                    rx_read_en      <= 1'b1;
+                                    rd_state        <= 4'h3;
+                                end
+
+                            else begin
                                 axi.rvalid      <= 1'b1;
                                 axi.rlast       <= 1'b1;
-                                rx_ready_int    <= 1'b0;
-                                axi.rdata       <= rx_data;
-                            end else begin
-                                counter         <= counter + 4'h4;
-                                axi.rlast       <= 1'b0;
-                                axi.rvalid      <= 1'b1;
-                                axi.rdata       <= rx_data;
-                                rx_read_en      <= 1'b1;
-                                rd_state        <= 4'h3;
+                                axi.rdata       <= 32'h0;
+                                rd_state        <= 4'h0;
                             end
 
                         end
@@ -170,7 +176,8 @@ always@( posedge axi.aclk ) begin
             end
 
         4'h2: begin
-            rd_state    <= 4'h0;
+            if ( !rmii.crs_dv )
+                rd_state    <= 4'h0;
             axi.rlast   <= 1'b0;
             axi.rvalid  <= 1'b0;
         end
@@ -218,7 +225,6 @@ always@( posedge axi.aclk ) begin
                     case ( write_addr )
                         `ETHERNET_TX_DATA_IN : begin
 
-                            
 
                             case ( tx_wr_data )
                                 2'b00: 

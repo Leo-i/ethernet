@@ -9,7 +9,7 @@ Disassembly of section .text:
    4:	00812e23          	sw	x8,28(x2)
    8:	02010413          	addi	x8,x2,32
    c:	000087b7          	lui	x15,0x8
-  10:	20878793          	addi	x15,x15,520 # 8208 <__global_pointer$+0x6478>
+  10:	20878793          	addi	x15,x15,520 # 8208 <__global_pointer$+0x6168>
   14:	fef42623          	sw	x15,-20(x8)
   18:	fec42783          	lw	x15,-20(x8)
   1c:	0007a783          	lw	x15,0(x15)
@@ -23,7 +23,7 @@ Disassembly of section .text:
   34:	00812e23          	sw	x8,28(x2)
   38:	02010413          	addi	x8,x2,32
   3c:	000087b7          	lui	x15,0x8
-  40:	20078793          	addi	x15,x15,512 # 8200 <__global_pointer$+0x6470>
+  40:	20078793          	addi	x15,x15,512 # 8200 <__global_pointer$+0x6160>
   44:	fef42623          	sw	x15,-20(x8)
   48:	fec42783          	lw	x15,-20(x8)
   4c:	0007a783          	lw	x15,0(x15)
@@ -38,7 +38,7 @@ Disassembly of section .text:
   68:	03010413          	addi	x8,x2,48
   6c:	fca42e23          	sw	x10,-36(x8)
   70:	000087b7          	lui	x15,0x8
-  74:	20478793          	addi	x15,x15,516 # 8204 <__global_pointer$+0x6474>
+  74:	20478793          	addi	x15,x15,516 # 8204 <__global_pointer$+0x6164>
   78:	fef42623          	sw	x15,-20(x8)
   7c:	fec42783          	lw	x15,-20(x8)
   80:	fdc42703          	lw	x14,-36(x8)
@@ -54,7 +54,7 @@ Disassembly of section .text:
   a0:	03010413          	addi	x8,x2,48
   a4:	fca42e23          	sw	x10,-36(x8)
   a8:	000087b7          	lui	x15,0x8
-  ac:	20478793          	addi	x15,x15,516 # 8204 <__global_pointer$+0x6474>
+  ac:	20478793          	addi	x15,x15,516 # 8204 <__global_pointer$+0x6164>
   b0:	fef42623          	sw	x15,-20(x8)
   b4:	fdc42783          	lw	x15,-36(x8)
   b8:	4187d713          	srai	x14,x15,0x18
@@ -81,7 +81,7 @@ Disassembly of section .text:
  104:	00812e23          	sw	x8,28(x2)
  108:	02010413          	addi	x8,x2,32
  10c:	000087b7          	lui	x15,0x8
- 110:	20c78793          	addi	x15,x15,524 # 820c <__global_pointer$+0x647c>
+ 110:	20c78793          	addi	x15,x15,524 # 820c <__global_pointer$+0x616c>
  114:	fef42623          	sw	x15,-20(x8)
  118:	fec42783          	lw	x15,-20(x8)
  11c:	0007a783          	lw	x15,0(x15)
@@ -166,7 +166,7 @@ Disassembly of section .text:
  238:	03010413          	addi	x8,x2,48
  23c:	fca42e23          	sw	x10,-36(x8)
  240:	000087b7          	lui	x15,0x8
- 244:	30078793          	addi	x15,x15,768 # 8300 <__global_pointer$+0x6570>
+ 244:	30078793          	addi	x15,x15,768 # 8300 <__global_pointer$+0x6260>
  248:	fef42623          	sw	x15,-20(x8)
  24c:	fec42783          	lw	x15,-20(x8)
  250:	fdc42703          	lw	x14,-36(x8)
@@ -190,206 +190,402 @@ Disassembly of section .text:
  290:	fef42623          	sw	x15,-20(x8)
  294:	0100006f          	jal	x0,2a4 <ETHERNET_send_data+0x3c>
  298:	000087b7          	lui	x15,0x8
- 29c:	10078793          	addi	x15,x15,256 # 8100 <__global_pointer$+0x6370>
+ 29c:	10078793          	addi	x15,x15,256 # 8100 <__global_pointer$+0x6060>
  2a0:	fef42623          	sw	x15,-20(x8)
  2a4:	a0a017b7          	lui	x15,0xa0a01
- 2a8:	b0878793          	addi	x15,x15,-1272 # a0a00b08 <__global_pointer$+0xa09fed78>
+ 2a8:	b0878793          	addi	x15,x15,-1272 # a0a00b08 <__global_pointer$+0xa09fea68>
  2ac:	fef42223          	sw	x15,-28(x8)
  2b0:	fe442783          	lw	x15,-28(x8)
  2b4:	04000713          	addi	x14,x0,64
  2b8:	00e7a023          	sw	x14,0(x15)
- 2bc:	fe042423          	sw	x0,-24(x8)
- 2c0:	0640006f          	jal	x0,324 <ETHERNET_send_data+0xbc>
- 2c4:	fd442783          	lw	x15,-44(x8)
- 2c8:	fff78713          	addi	x14,x15,-1
- 2cc:	fe842783          	lw	x15,-24(x8)
- 2d0:	02f71463          	bne	x14,x15,2f8 <ETHERNET_send_data+0x90>
- 2d4:	fe842783          	lw	x15,-24(x8)
- 2d8:	00279793          	slli	x15,x15,0x2
- 2dc:	fd842703          	lw	x14,-40(x8)
- 2e0:	00f707b3          	add	x15,x14,x15
- 2e4:	0007a783          	lw	x15,0(x15)
- 2e8:	00078713          	addi	x14,x15,0
- 2ec:	fe442783          	lw	x15,-28(x8)
- 2f0:	00e7a023          	sw	x14,0(x15)
- 2f4:	0240006f          	jal	x0,318 <ETHERNET_send_data+0xb0>
- 2f8:	fe842783          	lw	x15,-24(x8)
- 2fc:	00279793          	slli	x15,x15,0x2
- 300:	fd842703          	lw	x14,-40(x8)
- 304:	00f707b3          	add	x15,x14,x15
- 308:	0007a783          	lw	x15,0(x15)
- 30c:	00078713          	addi	x14,x15,0
- 310:	fec42783          	lw	x15,-20(x8)
- 314:	00e7a023          	sw	x14,0(x15)
- 318:	fe842783          	lw	x15,-24(x8)
- 31c:	00178793          	addi	x15,x15,1
- 320:	fef42423          	sw	x15,-24(x8)
- 324:	fe842783          	lw	x15,-24(x8)
- 328:	fd442703          	lw	x14,-44(x8)
- 32c:	f8e7ece3          	bltu	x15,x14,2c4 <ETHERNET_send_data+0x5c>
- 330:	00000013          	addi	x0,x0,0
- 334:	00000013          	addi	x0,x0,0
- 338:	02c12403          	lw	x8,44(x2)
- 33c:	03010113          	addi	x2,x2,48
- 340:	00008067          	jalr	x0,0(x1)
+ 2bc:	fd442783          	lw	x15,-44(x8)
+ 2c0:	0027d793          	srli	x15,x15,0x2
+ 2c4:	fef42023          	sw	x15,-32(x8)
+ 2c8:	fe042423          	sw	x0,-24(x8)
+ 2cc:	0600006f          	jal	x0,32c <ETHERNET_send_data+0xc4>
+ 2d0:	fe842703          	lw	x14,-24(x8)
+ 2d4:	fe042783          	lw	x15,-32(x8)
+ 2d8:	02f71463          	bne	x14,x15,300 <ETHERNET_send_data+0x98>
+ 2dc:	fe842783          	lw	x15,-24(x8)
+ 2e0:	00279793          	slli	x15,x15,0x2
+ 2e4:	fd842703          	lw	x14,-40(x8)
+ 2e8:	00f707b3          	add	x15,x14,x15
+ 2ec:	0007a783          	lw	x15,0(x15)
+ 2f0:	00078713          	addi	x14,x15,0
+ 2f4:	fe442783          	lw	x15,-28(x8)
+ 2f8:	00e7a023          	sw	x14,0(x15)
+ 2fc:	0240006f          	jal	x0,320 <ETHERNET_send_data+0xb8>
+ 300:	fe842783          	lw	x15,-24(x8)
+ 304:	00279793          	slli	x15,x15,0x2
+ 308:	fd842703          	lw	x14,-40(x8)
+ 30c:	00f707b3          	add	x15,x14,x15
+ 310:	0007a783          	lw	x15,0(x15)
+ 314:	00078713          	addi	x14,x15,0
+ 318:	fec42783          	lw	x15,-20(x8)
+ 31c:	00e7a023          	sw	x14,0(x15)
+ 320:	fe842783          	lw	x15,-24(x8)
+ 324:	00178793          	addi	x15,x15,1
+ 328:	fef42423          	sw	x15,-24(x8)
+ 32c:	fe842703          	lw	x14,-24(x8)
+ 330:	fe042783          	lw	x15,-32(x8)
+ 334:	f8e7dee3          	bge	x15,x14,2d0 <ETHERNET_send_data+0x68>
+ 338:	00000013          	addi	x0,x0,0
+ 33c:	00000013          	addi	x0,x0,0
+ 340:	02c12403          	lw	x8,44(x2)
+ 344:	03010113          	addi	x2,x2,48
+ 348:	00008067          	jalr	x0,0(x1)
 
-00000344 <ETHERNET_read_data>:
- 344:	fd010113          	addi	x2,x2,-48
- 348:	02812623          	sw	x8,44(x2)
- 34c:	03010413          	addi	x8,x2,48
- 350:	fca42e23          	sw	x10,-36(x8)
- 354:	fcb42c23          	sw	x11,-40(x8)
- 358:	fcc42a23          	sw	x12,-44(x8)
- 35c:	fdc42703          	lw	x14,-36(x8)
- 360:	00100793          	addi	x15,x0,1
- 364:	00f71a63          	bne	x14,x15,378 <ETHERNET_read_data+0x34>
- 368:	000087b7          	lui	x15,0x8
- 36c:	00878793          	addi	x15,x15,8 # 8008 <__global_pointer$+0x6278>
- 370:	fef42623          	sw	x15,-20(x8)
- 374:	0100006f          	jal	x0,384 <ETHERNET_read_data+0x40>
- 378:	000087b7          	lui	x15,0x8
- 37c:	10878793          	addi	x15,x15,264 # 8108 <__global_pointer$+0x6378>
- 380:	fef42623          	sw	x15,-20(x8)
- 384:	a0a017b7          	lui	x15,0xa0a01
- 388:	b0878793          	addi	x15,x15,-1272 # a0a00b08 <__global_pointer$+0xa09fed78>
- 38c:	fef42223          	sw	x15,-28(x8)
- 390:	fe442783          	lw	x15,-28(x8)
- 394:	0007a783          	lw	x15,0(x15)
- 398:	fef42423          	sw	x15,-24(x8)
- 39c:	fe042423          	sw	x0,-24(x8)
- 3a0:	0300006f          	jal	x0,3d0 <ETHERNET_read_data+0x8c>
+0000034c <ETHERNET_read_data>:
+ 34c:	fc010113          	addi	x2,x2,-64
+ 350:	02812e23          	sw	x8,60(x2)
+ 354:	04010413          	addi	x8,x2,64
+ 358:	fca42623          	sw	x10,-52(x8)
+ 35c:	fcb42423          	sw	x11,-56(x8)
+ 360:	fcc42703          	lw	x14,-52(x8)
+ 364:	00100793          	addi	x15,x0,1
+ 368:	00f71a63          	bne	x14,x15,37c <ETHERNET_read_data+0x30>
+ 36c:	000087b7          	lui	x15,0x8
+ 370:	00878793          	addi	x15,x15,8 # 8008 <__global_pointer$+0x5f68>
+ 374:	fef42623          	sw	x15,-20(x8)
+ 378:	0100006f          	jal	x0,388 <ETHERNET_read_data+0x3c>
+ 37c:	000087b7          	lui	x15,0x8
+ 380:	10878793          	addi	x15,x15,264 # 8108 <__global_pointer$+0x6068>
+ 384:	fef42623          	sw	x15,-20(x8)
+ 388:	a0a017b7          	lui	x15,0xa0a01
+ 38c:	b0878793          	addi	x15,x15,-1272 # a0a00b08 <__global_pointer$+0xa09fea68>
+ 390:	fef42223          	sw	x15,-28(x8)
+ 394:	fe442783          	lw	x15,-28(x8)
+ 398:	0007a783          	lw	x15,0(x15)
+ 39c:	fef42023          	sw	x15,-32(x8)
+ 3a0:	fe042423          	sw	x0,-24(x8)
  3a4:	fec42783          	lw	x15,-20(x8)
- 3a8:	0007a683          	lw	x13,0(x15)
- 3ac:	fe842783          	lw	x15,-24(x8)
- 3b0:	00279793          	slli	x15,x15,0x2
- 3b4:	fd842703          	lw	x14,-40(x8)
- 3b8:	00f707b3          	add	x15,x14,x15
- 3bc:	00068713          	addi	x14,x13,0
- 3c0:	00e7a023          	sw	x14,0(x15)
- 3c4:	fe842783          	lw	x15,-24(x8)
- 3c8:	00178793          	addi	x15,x15,1
- 3cc:	fef42423          	sw	x15,-24(x8)
- 3d0:	fe842783          	lw	x15,-24(x8)
- 3d4:	fd442703          	lw	x14,-44(x8)
- 3d8:	fce7e6e3          	bltu	x15,x14,3a4 <ETHERNET_read_data+0x60>
- 3dc:	00000013          	addi	x0,x0,0
- 3e0:	00000013          	addi	x0,x0,0
- 3e4:	02c12403          	lw	x8,44(x2)
- 3e8:	03010113          	addi	x2,x2,48
- 3ec:	00008067          	jalr	x0,0(x1)
+ 3a8:	0007a783          	lw	x15,0(x15)
+ 3ac:	fcf42e23          	sw	x15,-36(x8)
+ 3b0:	fdc42703          	lw	x14,-36(x8)
+ 3b4:	a0a017b7          	lui	x15,0xa0a01
+ 3b8:	b0878793          	addi	x15,x15,-1272 # a0a00b08 <__global_pointer$+0xa09fea68>
+ 3bc:	02f70663          	beq	x14,x15,3e8 <ETHERNET_read_data+0x9c>
+ 3c0:	fe842783          	lw	x15,-24(x8)
+ 3c4:	00279793          	slli	x15,x15,0x2
+ 3c8:	fc842703          	lw	x14,-56(x8)
+ 3cc:	00f707b3          	add	x15,x14,x15
+ 3d0:	fdc42703          	lw	x14,-36(x8)
+ 3d4:	00e7a023          	sw	x14,0(x15)
+ 3d8:	fe842783          	lw	x15,-24(x8)
+ 3dc:	00178793          	addi	x15,x15,1
+ 3e0:	fef42423          	sw	x15,-24(x8)
+ 3e4:	fc1ff06f          	jal	x0,3a4 <ETHERNET_read_data+0x58>
+ 3e8:	00000013          	addi	x0,x0,0
+ 3ec:	03c12403          	lw	x8,60(x2)
+ 3f0:	04010113          	addi	x2,x2,64
+ 3f4:	00008067          	jalr	x0,0(x1)
 
-000003f0 <ETHERNET_check_done>:
- 3f0:	fd010113          	addi	x2,x2,-48
- 3f4:	02812623          	sw	x8,44(x2)
- 3f8:	03010413          	addi	x8,x2,48
- 3fc:	fca42e23          	sw	x10,-36(x8)
- 400:	fdc42703          	lw	x14,-36(x8)
- 404:	00100793          	addi	x15,x0,1
- 408:	00f71a63          	bne	x14,x15,41c <ETHERNET_check_done+0x2c>
- 40c:	000087b7          	lui	x15,0x8
- 410:	00478793          	addi	x15,x15,4 # 8004 <__global_pointer$+0x6274>
- 414:	fef42623          	sw	x15,-20(x8)
- 418:	0100006f          	jal	x0,428 <ETHERNET_check_done+0x38>
- 41c:	000087b7          	lui	x15,0x8
- 420:	10478793          	addi	x15,x15,260 # 8104 <__global_pointer$+0x6374>
- 424:	fef42623          	sw	x15,-20(x8)
- 428:	fec42783          	lw	x15,-20(x8)
- 42c:	0007a783          	lw	x15,0(x15)
- 430:	00078513          	addi	x10,x15,0
- 434:	02c12403          	lw	x8,44(x2)
- 438:	03010113          	addi	x2,x2,48
- 43c:	00008067          	jalr	x0,0(x1)
+000003f8 <ETHERNET_check_done>:
+ 3f8:	fd010113          	addi	x2,x2,-48
+ 3fc:	02812623          	sw	x8,44(x2)
+ 400:	03010413          	addi	x8,x2,48
+ 404:	fca42e23          	sw	x10,-36(x8)
+ 408:	fdc42703          	lw	x14,-36(x8)
+ 40c:	00100793          	addi	x15,x0,1
+ 410:	00f71a63          	bne	x14,x15,424 <ETHERNET_check_done+0x2c>
+ 414:	000087b7          	lui	x15,0x8
+ 418:	00478793          	addi	x15,x15,4 # 8004 <__global_pointer$+0x5f64>
+ 41c:	fef42623          	sw	x15,-20(x8)
+ 420:	0100006f          	jal	x0,430 <ETHERNET_check_done+0x38>
+ 424:	000087b7          	lui	x15,0x8
+ 428:	10478793          	addi	x15,x15,260 # 8104 <__global_pointer$+0x6064>
+ 42c:	fef42623          	sw	x15,-20(x8)
+ 430:	fec42783          	lw	x15,-20(x8)
+ 434:	0007a783          	lw	x15,0(x15)
+ 438:	00078513          	addi	x10,x15,0
+ 43c:	02c12403          	lw	x8,44(x2)
+ 440:	03010113          	addi	x2,x2,48
+ 444:	00008067          	jalr	x0,0(x1)
 
-00000440 <ETHERNET_data_count>:
- 440:	fd010113          	addi	x2,x2,-48
- 444:	02812623          	sw	x8,44(x2)
- 448:	03010413          	addi	x8,x2,48
- 44c:	fca42e23          	sw	x10,-36(x8)
- 450:	fdc42703          	lw	x14,-36(x8)
- 454:	00100793          	addi	x15,x0,1
- 458:	00f71a63          	bne	x14,x15,46c <ETHERNET_data_count+0x2c>
- 45c:	000087b7          	lui	x15,0x8
- 460:	01078793          	addi	x15,x15,16 # 8010 <__global_pointer$+0x6280>
- 464:	fef42623          	sw	x15,-20(x8)
- 468:	0100006f          	jal	x0,478 <ETHERNET_data_count+0x38>
- 46c:	000087b7          	lui	x15,0x8
- 470:	11078793          	addi	x15,x15,272 # 8110 <__global_pointer$+0x6380>
- 474:	fef42623          	sw	x15,-20(x8)
- 478:	fec42783          	lw	x15,-20(x8)
- 47c:	0007a783          	lw	x15,0(x15)
- 480:	00078513          	addi	x10,x15,0
- 484:	02c12403          	lw	x8,44(x2)
- 488:	03010113          	addi	x2,x2,48
- 48c:	00008067          	jalr	x0,0(x1)
+00000448 <ETHERNET_data_count>:
+ 448:	fd010113          	addi	x2,x2,-48
+ 44c:	02812623          	sw	x8,44(x2)
+ 450:	03010413          	addi	x8,x2,48
+ 454:	fca42e23          	sw	x10,-36(x8)
+ 458:	fdc42703          	lw	x14,-36(x8)
+ 45c:	00100793          	addi	x15,x0,1
+ 460:	00f71a63          	bne	x14,x15,474 <ETHERNET_data_count+0x2c>
+ 464:	000087b7          	lui	x15,0x8
+ 468:	01078793          	addi	x15,x15,16 # 8010 <__global_pointer$+0x5f70>
+ 46c:	fef42623          	sw	x15,-20(x8)
+ 470:	0100006f          	jal	x0,480 <ETHERNET_data_count+0x38>
+ 474:	000087b7          	lui	x15,0x8
+ 478:	11078793          	addi	x15,x15,272 # 8110 <__global_pointer$+0x6070>
+ 47c:	fef42623          	sw	x15,-20(x8)
+ 480:	fec42783          	lw	x15,-20(x8)
+ 484:	0007a783          	lw	x15,0(x15)
+ 488:	00078513          	addi	x10,x15,0
+ 48c:	02c12403          	lw	x8,44(x2)
+ 490:	03010113          	addi	x2,x2,48
+ 494:	00008067          	jalr	x0,0(x1)
 
-00000490 <ETHERNET_protocol>:
- 490:	fd010113          	addi	x2,x2,-48
- 494:	02812623          	sw	x8,44(x2)
- 498:	03010413          	addi	x8,x2,48
- 49c:	fca42e23          	sw	x10,-36(x8)
- 4a0:	fdc42703          	lw	x14,-36(x8)
- 4a4:	00100793          	addi	x15,x0,1
- 4a8:	00f71a63          	bne	x14,x15,4bc <ETHERNET_protocol+0x2c>
- 4ac:	000087b7          	lui	x15,0x8
- 4b0:	01478793          	addi	x15,x15,20 # 8014 <__global_pointer$+0x6284>
- 4b4:	fef42623          	sw	x15,-20(x8)
- 4b8:	0100006f          	jal	x0,4c8 <ETHERNET_protocol+0x38>
- 4bc:	000087b7          	lui	x15,0x8
- 4c0:	11478793          	addi	x15,x15,276 # 8114 <__global_pointer$+0x6384>
- 4c4:	fef42623          	sw	x15,-20(x8)
- 4c8:	fec42783          	lw	x15,-20(x8)
- 4cc:	0007a783          	lw	x15,0(x15)
- 4d0:	00078513          	addi	x10,x15,0
- 4d4:	02c12403          	lw	x8,44(x2)
- 4d8:	03010113          	addi	x2,x2,48
- 4dc:	00008067          	jalr	x0,0(x1)
+00000498 <ETHERNET_protocol>:
+ 498:	fd010113          	addi	x2,x2,-48
+ 49c:	02812623          	sw	x8,44(x2)
+ 4a0:	03010413          	addi	x8,x2,48
+ 4a4:	fca42e23          	sw	x10,-36(x8)
+ 4a8:	fdc42703          	lw	x14,-36(x8)
+ 4ac:	00100793          	addi	x15,x0,1
+ 4b0:	00f71a63          	bne	x14,x15,4c4 <ETHERNET_protocol+0x2c>
+ 4b4:	000087b7          	lui	x15,0x8
+ 4b8:	01478793          	addi	x15,x15,20 # 8014 <__global_pointer$+0x5f74>
+ 4bc:	fef42623          	sw	x15,-20(x8)
+ 4c0:	0100006f          	jal	x0,4d0 <ETHERNET_protocol+0x38>
+ 4c4:	000087b7          	lui	x15,0x8
+ 4c8:	11478793          	addi	x15,x15,276 # 8114 <__global_pointer$+0x6074>
+ 4cc:	fef42623          	sw	x15,-20(x8)
+ 4d0:	fec42783          	lw	x15,-20(x8)
+ 4d4:	0007a783          	lw	x15,0(x15)
+ 4d8:	00078513          	addi	x10,x15,0
+ 4dc:	02c12403          	lw	x8,44(x2)
+ 4e0:	03010113          	addi	x2,x2,48
+ 4e4:	00008067          	jalr	x0,0(x1)
 
-000004e0 <ETHERNET_rx_empty>:
- 4e0:	fd010113          	addi	x2,x2,-48
- 4e4:	02812623          	sw	x8,44(x2)
- 4e8:	03010413          	addi	x8,x2,48
- 4ec:	fca42e23          	sw	x10,-36(x8)
- 4f0:	fdc42703          	lw	x14,-36(x8)
- 4f4:	00100793          	addi	x15,x0,1
- 4f8:	00f71a63          	bne	x14,x15,50c <ETHERNET_rx_empty+0x2c>
- 4fc:	000087b7          	lui	x15,0x8
- 500:	00c78793          	addi	x15,x15,12 # 800c <__global_pointer$+0x627c>
- 504:	fef42623          	sw	x15,-20(x8)
- 508:	0100006f          	jal	x0,518 <ETHERNET_rx_empty+0x38>
- 50c:	000087b7          	lui	x15,0x8
- 510:	10c78793          	addi	x15,x15,268 # 810c <__global_pointer$+0x637c>
- 514:	fef42623          	sw	x15,-20(x8)
- 518:	fec42783          	lw	x15,-20(x8)
- 51c:	0007a783          	lw	x15,0(x15)
- 520:	00078513          	addi	x10,x15,0
- 524:	02c12403          	lw	x8,44(x2)
- 528:	03010113          	addi	x2,x2,48
- 52c:	00008067          	jalr	x0,0(x1)
+000004e8 <ETHERNET_rx_empty>:
+ 4e8:	fd010113          	addi	x2,x2,-48
+ 4ec:	02812623          	sw	x8,44(x2)
+ 4f0:	03010413          	addi	x8,x2,48
+ 4f4:	fca42e23          	sw	x10,-36(x8)
+ 4f8:	fdc42703          	lw	x14,-36(x8)
+ 4fc:	00100793          	addi	x15,x0,1
+ 500:	00f71a63          	bne	x14,x15,514 <ETHERNET_rx_empty+0x2c>
+ 504:	000087b7          	lui	x15,0x8
+ 508:	00c78793          	addi	x15,x15,12 # 800c <__global_pointer$+0x5f6c>
+ 50c:	fef42623          	sw	x15,-20(x8)
+ 510:	0100006f          	jal	x0,520 <ETHERNET_rx_empty+0x38>
+ 514:	000087b7          	lui	x15,0x8
+ 518:	10c78793          	addi	x15,x15,268 # 810c <__global_pointer$+0x606c>
+ 51c:	fef42623          	sw	x15,-20(x8)
+ 520:	fec42783          	lw	x15,-20(x8)
+ 524:	0007a783          	lw	x15,0(x15)
+ 528:	00078513          	addi	x10,x15,0
+ 52c:	02c12403          	lw	x8,44(x2)
+ 530:	03010113          	addi	x2,x2,48
+ 534:	00008067          	jalr	x0,0(x1)
 
-00000530 <main>:
- 530:	ff010113          	addi	x2,x2,-16
- 534:	00112623          	sw	x1,12(x2)
- 538:	00812423          	sw	x8,8(x2)
- 53c:	01010413          	addi	x8,x2,16
- 540:	008000ef          	jal	x1,548 <control_led_via_uart>
- 544:	ffdff06f          	jal	x0,540 <main+0x10>
+00000538 <main>:
+ 538:	81010113          	addi	x2,x2,-2032
+ 53c:	7e112623          	sw	x1,2028(x2)
+ 540:	7e812423          	sw	x8,2024(x2)
+ 544:	7f010413          	addi	x8,x2,2032
+ 548:	c2010113          	addi	x2,x2,-992
+ 54c:	fffff7b7          	lui	x15,0xfffff
+ 550:	ff040713          	addi	x14,x8,-16
+ 554:	00f707b3          	add	x15,x14,x15
+ 558:	c0c0c737          	lui	x14,0xc0c0c
+ 55c:	0c070713          	addi	x14,x14,192 # c0c0c0c0 <__global_pointer$+0xc0c0a020>
+ 560:	44e7a023          	sw	x14,1088(x15) # fffff440 <__global_pointer$+0xffffd3a0>
+ 564:	fffff7b7          	lui	x15,0xfffff
+ 568:	ff040713          	addi	x14,x8,-16
+ 56c:	00f707b3          	add	x15,x14,x15
+ 570:	c0c0c737          	lui	x14,0xc0c0c
+ 574:	0c070713          	addi	x14,x14,192 # c0c0c0c0 <__global_pointer$+0xc0c0a020>
+ 578:	44e7a223          	sw	x14,1092(x15) # fffff444 <__global_pointer$+0xffffd3a4>
+ 57c:	fffff7b7          	lui	x15,0xfffff
+ 580:	ff040713          	addi	x14,x8,-16
+ 584:	00f707b3          	add	x15,x14,x15
+ 588:	c0c0c737          	lui	x14,0xc0c0c
+ 58c:	0c070713          	addi	x14,x14,192 # c0c0c0c0 <__global_pointer$+0xc0c0a020>
+ 590:	44e7a423          	sw	x14,1096(x15) # fffff448 <__global_pointer$+0xffffd3a8>
+ 594:	fffff7b7          	lui	x15,0xfffff
+ 598:	ff040713          	addi	x14,x8,-16
+ 59c:	00f707b3          	add	x15,x14,x15
+ 5a0:	c0c0c737          	lui	x14,0xc0c0c
+ 5a4:	0c070713          	addi	x14,x14,192 # c0c0c0c0 <__global_pointer$+0xc0c0a020>
+ 5a8:	44e7a623          	sw	x14,1100(x15) # fffff44c <__global_pointer$+0xffffd3ac>
+ 5ac:	fffff7b7          	lui	x15,0xfffff
+ 5b0:	ff040713          	addi	x14,x8,-16
+ 5b4:	00f707b3          	add	x15,x14,x15
+ 5b8:	c0c0c737          	lui	x14,0xc0c0c
+ 5bc:	0c070713          	addi	x14,x14,192 # c0c0c0c0 <__global_pointer$+0xc0c0a020>
+ 5c0:	44e7a823          	sw	x14,1104(x15) # fffff450 <__global_pointer$+0xffffd3b0>
+ 5c4:	fffff7b7          	lui	x15,0xfffff
+ 5c8:	44078793          	addi	x15,x15,1088 # fffff440 <__global_pointer$+0xffffd3a0>
+ 5cc:	ff040713          	addi	x14,x8,-16
+ 5d0:	00f707b3          	add	x15,x14,x15
+ 5d4:	01400613          	addi	x12,x0,20
+ 5d8:	00078593          	addi	x11,x15,0
+ 5dc:	00200513          	addi	x10,x0,2
+ 5e0:	c89ff0ef          	jal	x1,268 <ETHERNET_send_data>
+ 5e4:	1f400513          	addi	x10,x0,500
+ 5e8:	bb5ff0ef          	jal	x1,19c <delay_us>
+ 5ec:	fffff7b7          	lui	x15,0xfffff
+ 5f0:	ff040713          	addi	x14,x8,-16
+ 5f4:	00f707b3          	add	x15,x14,x15
+ 5f8:	ffff9737          	lui	x14,0xffff9
+ 5fc:	8e370713          	addi	x14,x14,-1821 # ffff88e3 <__global_pointer$+0xffff6843>
+ 600:	44e7a023          	sw	x14,1088(x15) # fffff440 <__global_pointer$+0xffffd3a0>
+ 604:	fffff7b7          	lui	x15,0xfffff
+ 608:	ff040713          	addi	x14,x8,-16
+ 60c:	00f707b3          	add	x15,x14,x15
+ 610:	ffff9737          	lui	x14,0xffff9
+ 614:	8e370713          	addi	x14,x14,-1821 # ffff88e3 <__global_pointer$+0xffff6843>
+ 618:	44e7a223          	sw	x14,1092(x15) # fffff444 <__global_pointer$+0xffffd3a4>
+ 61c:	fffff7b7          	lui	x15,0xfffff
+ 620:	ff040713          	addi	x14,x8,-16
+ 624:	00f707b3          	add	x15,x14,x15
+ 628:	5678a737          	lui	x14,0x5678a
+ 62c:	abc70713          	addi	x14,x14,-1348 # 56789abc <__global_pointer$+0x56787a1c>
+ 630:	44e7a423          	sw	x14,1096(x15) # fffff448 <__global_pointer$+0xffffd3a8>
+ 634:	fffff7b7          	lui	x15,0xfffff
+ 638:	ff040713          	addi	x14,x8,-16
+ 63c:	00f707b3          	add	x15,x14,x15
+ 640:	08004737          	lui	x14,0x8004
+ 644:	50070713          	addi	x14,x14,1280 # 8004500 <__global_pointer$+0x8002460>
+ 648:	44e7a623          	sw	x14,1100(x15) # fffff44c <__global_pointer$+0xffffd3ac>
+ 64c:	fffff7b7          	lui	x15,0xfffff
+ 650:	ff040713          	addi	x14,x8,-16
+ 654:	00f707b3          	add	x15,x14,x15
+ 658:	00249737          	lui	x14,0x249
+ 65c:	8e370713          	addi	x14,x14,-1821 # 2488e3 <__global_pointer$+0x246843>
+ 660:	44e7a823          	sw	x14,1104(x15) # fffff450 <__global_pointer$+0xffffd3b0>
+ 664:	fffff7b7          	lui	x15,0xfffff
+ 668:	ff040713          	addi	x14,x8,-16
+ 66c:	00f707b3          	add	x15,x14,x15
+ 670:	5678a737          	lui	x14,0x5678a
+ 674:	abc70713          	addi	x14,x14,-1348 # 56789abc <__global_pointer$+0x56787a1c>
+ 678:	44e7aa23          	sw	x14,1108(x15) # fffff454 <__global_pointer$+0xffffd3b4>
+ 67c:	fffff7b7          	lui	x15,0xfffff
+ 680:	ff040713          	addi	x14,x8,-16
+ 684:	00f707b3          	add	x15,x14,x15
+ 688:	a9fe1737          	lui	x14,0xa9fe1
+ 68c:	03270713          	addi	x14,x14,50 # a9fe1032 <__global_pointer$+0xa9fdef92>
+ 690:	44e7ac23          	sw	x14,1112(x15) # fffff458 <__global_pointer$+0xffffd3b8>
+ 694:	fffff7b7          	lui	x15,0xfffff
+ 698:	ff040713          	addi	x14,x8,-16
+ 69c:	00f707b3          	add	x15,x14,x15
+ 6a0:	4407ae23          	sw	x0,1116(x15) # fffff45c <__global_pointer$+0xffffd3bc>
+ 6a4:	fffff7b7          	lui	x15,0xfffff
+ 6a8:	ff040713          	addi	x14,x8,-16
+ 6ac:	00f707b3          	add	x15,x14,x15
+ 6b0:	0000c737          	lui	x14,0xc
+ 6b4:	0a870713          	addi	x14,x14,168 # c0a8 <__global_pointer$+0xa008>
+ 6b8:	46e7a023          	sw	x14,1120(x15) # fffff460 <__global_pointer$+0xffffd3c0>
+ 6bc:	fffff7b7          	lui	x15,0xfffff
+ 6c0:	ff040713          	addi	x14,x8,-16
+ 6c4:	00f707b3          	add	x15,x14,x15
+ 6c8:	01010737          	lui	x14,0x1010
+ 6cc:	46e7a223          	sw	x14,1124(x15) # fffff464 <__global_pointer$+0xffffd3c4>
+ 6d0:	fffff7b7          	lui	x15,0xfffff
+ 6d4:	ff040713          	addi	x14,x8,-16
+ 6d8:	00f707b3          	add	x15,x14,x15
+ 6dc:	46320737          	lui	x14,0x46320
+ 6e0:	40070713          	addi	x14,x14,1024 # 46320400 <__global_pointer$+0x4631e360>
+ 6e4:	46e7a423          	sw	x14,1128(x15) # fffff468 <__global_pointer$+0xffffd3c8>
+ 6e8:	fffff7b7          	lui	x15,0xfffff
+ 6ec:	ff040713          	addi	x14,x8,-16
+ 6f0:	00f707b3          	add	x15,x14,x15
+ 6f4:	20400713          	addi	x14,x0,516
+ 6f8:	46e7a623          	sw	x14,1132(x15) # fffff46c <__global_pointer$+0xffffd3cc>
+ 6fc:	fffff7b7          	lui	x15,0xfffff
+ 700:	ff040713          	addi	x14,x8,-16
+ 704:	00f707b3          	add	x15,x14,x15
+ 708:	05b40737          	lui	x14,0x5b40
+ 70c:	10370713          	addi	x14,x14,259 # 5b40103 <__global_pointer$+0x5b3e063>
+ 710:	46e7a823          	sw	x14,1136(x15) # fffff470 <__global_pointer$+0xffffd3d0>
+ 714:	fffff7b7          	lui	x15,0xfffff
+ 718:	ff040713          	addi	x14,x8,-16
+ 71c:	00f707b3          	add	x15,x14,x15
+ 720:	03080737          	lui	x14,0x3080
+ 724:	10170713          	addi	x14,x14,257 # 3080101 <__global_pointer$+0x307e061>
+ 728:	46e7aa23          	sw	x14,1140(x15) # fffff474 <__global_pointer$+0xffffd3d4>
+ 72c:	fffff7b7          	lui	x15,0xfffff
+ 730:	ff040713          	addi	x14,x8,-16
+ 734:	00f707b3          	add	x15,x14,x15
+ 738:	04025737          	lui	x14,0x4025
+ 73c:	02470713          	addi	x14,x14,36 # 4025024 <__global_pointer$+0x4022f84>
+ 740:	46e7ac23          	sw	x14,1144(x15) # fffff478 <__global_pointer$+0xffffd3d8>
+ 744:	fffff7b7          	lui	x15,0xfffff
+ 748:	ff040713          	addi	x14,x8,-16
+ 74c:	00f707b3          	add	x15,x14,x15
+ 750:	d6500737          	lui	x14,0xd6500
+ 754:	46e7ae23          	sw	x14,1148(x15) # fffff47c <__global_pointer$+0xffffd3dc>
+ 758:	fffff7b7          	lui	x15,0xfffff
+ 75c:	ff040713          	addi	x14,x8,-16
+ 760:	00f707b3          	add	x15,x14,x15
+ 764:	4807a023          	sw	x0,1152(x15) # fffff480 <__global_pointer$+0xffffd3e0>
+ 768:	fffff7b7          	lui	x15,0xfffff
+ 76c:	ff040713          	addi	x14,x8,-16
+ 770:	00f707b3          	add	x15,x14,x15
+ 774:	4807a223          	sw	x0,1156(x15) # fffff484 <__global_pointer$+0xffffd3e4>
+ 778:	fffff7b7          	lui	x15,0xfffff
+ 77c:	ff040713          	addi	x14,x8,-16
+ 780:	00f707b3          	add	x15,x14,x15
+ 784:	d6500737          	lui	x14,0xd6500
+ 788:	48e7a423          	sw	x14,1160(x15) # fffff488 <__global_pointer$+0xffffd3e8>
+ 78c:	fffff7b7          	lui	x15,0xfffff
+ 790:	ff040713          	addi	x14,x8,-16
+ 794:	00f707b3          	add	x15,x14,x15
+ 798:	4807a823          	sw	x0,1168(x15) # fffff490 <__global_pointer$+0xffffd3f0>
+ 79c:	fffff7b7          	lui	x15,0xfffff
+ 7a0:	ff040713          	addi	x14,x8,-16
+ 7a4:	00f707b3          	add	x15,x14,x15
+ 7a8:	4807aa23          	sw	x0,1172(x15) # fffff494 <__global_pointer$+0xffffd3f4>
+ 7ac:	fffff7b7          	lui	x15,0xfffff
+ 7b0:	ff040713          	addi	x14,x8,-16
+ 7b4:	00f707b3          	add	x15,x14,x15
+ 7b8:	4807ac23          	sw	x0,1176(x15) # fffff498 <__global_pointer$+0xffffd3f8>
+ 7bc:	fe042623          	sw	x0,-20(x8)
+ 7c0:	941ff0ef          	jal	x1,100 <UART_check>
+ 7c4:	00050793          	addi	x15,x10,0
+ 7c8:	02078e63          	beq	x15,x0,804 <main+0x2cc>
+ 7cc:	865ff0ef          	jal	x1,30 <UART_read_data>
+ 7d0:	fea42623          	sw	x10,-20(x8)
+ 7d4:	fec42503          	lw	x10,-20(x8)
+ 7d8:	a59ff0ef          	jal	x1,230 <set_led>
+ 7dc:	02600793          	addi	x15,x0,38
+ 7e0:	fef42623          	sw	x15,-20(x8)
+ 7e4:	fffff7b7          	lui	x15,0xfffff
+ 7e8:	44078793          	addi	x15,x15,1088 # fffff440 <__global_pointer$+0xffffd3a0>
+ 7ec:	ff040713          	addi	x14,x8,-16
+ 7f0:	00f707b3          	add	x15,x14,x15
+ 7f4:	05c00613          	addi	x12,x0,92
+ 7f8:	00078593          	addi	x11,x15,0
+ 7fc:	00200513          	addi	x10,x0,2
+ 800:	a69ff0ef          	jal	x1,268 <ETHERNET_send_data>
+ 804:	00100513          	addi	x10,x0,1
+ 808:	ce1ff0ef          	jal	x1,4e8 <ETHERNET_rx_empty>
+ 80c:	00050793          	addi	x15,x10,0
+ 810:	fa0798e3          	bne	x15,x0,7c0 <main+0x288>
+ 814:	00100513          	addi	x10,x0,1
+ 818:	c81ff0ef          	jal	x1,498 <ETHERNET_protocol>
+ 81c:	fea42423          	sw	x10,-24(x8)
+ 820:	a0c40793          	addi	x15,x8,-1524
+ 824:	00078593          	addi	x11,x15,0
+ 828:	00100513          	addi	x10,x0,1
+ 82c:	b21ff0ef          	jal	x1,34c <ETHERNET_read_data>
+ 830:	fd0ff0ef          	jal	x1,0 <UART_check_busy>
+ 834:	00050793          	addi	x15,x10,0
+ 838:	00078463          	beq	x15,x0,840 <main+0x308>
+ 83c:	ff5ff06f          	jal	x0,830 <main+0x2f8>
+ 840:	00000013          	addi	x0,x0,0
+ 844:	fe842783          	lw	x15,-24(x8)
+ 848:	4087d793          	srai	x15,x15,0x8
+ 84c:	00078513          	addi	x10,x15,0
+ 850:	811ff0ef          	jal	x1,60 <UART_send_byte>
+ 854:	fe842503          	lw	x10,-24(x8)
+ 858:	809ff0ef          	jal	x1,60 <UART_send_byte>
+ 85c:	f65ff06f          	jal	x0,7c0 <main+0x288>
 
-00000548 <control_led_via_uart>:
- 548:	fe010113          	addi	x2,x2,-32
- 54c:	00112e23          	sw	x1,28(x2)
- 550:	00812c23          	sw	x8,24(x2)
- 554:	02010413          	addi	x8,x2,32
- 558:	ba9ff0ef          	jal	x1,100 <UART_check>
- 55c:	00050793          	addi	x15,x10,0
- 560:	00078e63          	beq	x15,x0,57c <control_led_via_uart+0x34>
- 564:	acdff0ef          	jal	x1,30 <UART_read_data>
- 568:	00050793          	addi	x15,x10,0
- 56c:	fef42623          	sw	x15,-20(x8)
- 570:	fec42783          	lw	x15,-20(x8)
- 574:	00078513          	addi	x10,x15,0
- 578:	cb9ff0ef          	jal	x1,230 <set_led>
- 57c:	00000013          	addi	x0,x0,0
- 580:	01c12083          	lw	x1,28(x2)
- 584:	01812403          	lw	x8,24(x2)
- 588:	02010113          	addi	x2,x2,32
- 58c:	00008067          	jalr	x0,0(x1)
+00000860 <control_led_via_uart>:
+ 860:	ff010113          	addi	x2,x2,-16
+ 864:	00112623          	sw	x1,12(x2)
+ 868:	00812423          	sw	x8,8(x2)
+ 86c:	01010413          	addi	x8,x2,16
+ 870:	891ff0ef          	jal	x1,100 <UART_check>
+ 874:	00050793          	addi	x15,x10,0
+ 878:	00078a63          	beq	x15,x0,88c <control_led_via_uart+0x2c>
+ 87c:	fb4ff0ef          	jal	x1,30 <UART_read_data>
+ 880:	00050793          	addi	x15,x10,0
+ 884:	00078513          	addi	x10,x15,0
+ 888:	9a9ff0ef          	jal	x1,230 <set_led>
+ 88c:	00000013          	addi	x0,x0,0
+ 890:	00c12083          	lw	x1,12(x2)
+ 894:	00812403          	lw	x8,8(x2)
+ 898:	01010113          	addi	x2,x2,16
+ 89c:	00008067          	jalr	x0,0(x1)
