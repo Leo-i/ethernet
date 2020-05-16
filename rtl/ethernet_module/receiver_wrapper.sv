@@ -35,7 +35,7 @@ module receiver_wrapper(
     input               read_en,
     output              empty,
 
-    output  reg  [15:0] data_count = 16'h1FFF,
+    output  reg  [15:0] data_count = 16'h0,
     output  reg  [15:0] protocol_type     
 );
 
@@ -48,7 +48,7 @@ always_ff@( posedge clk_50_mhz ) begin
     if ( rst_n == 1'b0 ) begin
         counter         <= 16'b0;
         protocol_type   <= 16'h0;
-        data_count      <= 16'h1FFF;
+        data_count      <= 16'h0;
         ready           <= 1'b0; 
 
     end else 

@@ -17,7 +17,7 @@ int main(void){
 
     ETHERNET_send_data(2,tx_data,20); // initialize
 
-    delay_us(500);
+    delay_us(100);
 
     tx_data[0]  = 0xFFFF88E3;
     tx_data[1]  = 0xFFFF88E3;
@@ -43,6 +43,7 @@ int main(void){
     tx_data[22] = 0x00000000;
 
     int command = 0;
+    int byte;
 	
    while(1){
        //control_led_via_uart();
@@ -51,32 +52,27 @@ int main(void){
             command = UART_read_data();
             set_led(command);
 
-            if ( command = 0x26 )
-                ETHERNET_send_data(2,tx_data,92);
+            if ( command == 208 )
+                ETHERNET_send_data(2,tx_data,20);
+            
         }
 
+        if (ETHERNET_rx_ready(1)){
+            
+            int protocol   = ETHERNET_protocol(1);
+            int data_count = ETHERNET_data_count(1);
+            ETHERNET_read_data(1,rx_data);
 
+            while (UART_check_busy());
+            
+            UART_send_word(protocol);
+            UART_send_word(data_count);
+        }
 
-       if (!ETHERNET_rx_empty(1)){
-           int protocol = ETHERNET_protocol(1);
-           ETHERNET_read_data(1,rx_data);
-
-            while (1)
-                if ( UART_check_busy() == 0)
-                    break;
-           
-           UART_send_byte(protocol >> 8);
-           UART_send_byte(protocol);
-       }
    }
 }
 
-void control_led_via_uart(){
-    
-    if ( UART_check() != 0)
-        set_led(UART_read_data());   
-    
-}
+
 
 
 

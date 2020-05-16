@@ -27,7 +27,7 @@ module AXI_ethernet(
     AXI_LITE.slave      axi,
     RMII.master         rmii,
 
-    output         reg  rx_ready_int
+    output              rx_ready
 );
 
 wire    [1:0]   tx_d;
@@ -77,15 +77,8 @@ always@( posedge axi.aclk ) begin
 
                 counter     <= 0;
                 axi.rlast   <= 1'b0;
-                if ( rx_ready )
-                    if ( rx_data_count == 16'h1FFF ) begin
-                        rx_clear        <= 1'b1;
-                        rx_ready_int    <= 1'b0;
-                    end else
-                        rx_ready_int    <= 1'b1;
-                else begin
-                    rx_clear        <= 1'b0;
-                end
+
+                rx_clear        <= 1'b0;
                 
                 if ( axi.arvalid ) begin
                     read_addr    <= axi.araddr;
@@ -93,7 +86,6 @@ always@( posedge axi.aclk ) begin
                     rd_state    <= 4'h1;
                 end else
                     axi.rvalid  <= 1'b0;
-
             end
             4'h1: begin //read
                 if ( axi.rready ) 
@@ -115,7 +107,6 @@ always@( posedge axi.aclk ) begin
                                     rx_clear        <= 1'b1;
                                     axi.rvalid      <= 1'b1;
                                     axi.rlast       <= 1'b1;
-                                    rx_ready_int    <= 1'b0;
                                     axi.rdata       <= rx_data;
                                 end else begin
                                     counter         <= counter + 4'h4;
@@ -135,7 +126,7 @@ always@( posedge axi.aclk ) begin
 
                         end
                         `ETHERNET_RX_EMPTY: begin
-                            axi.rdata   <= rx_empty;
+                            axi.rdata   <= rx_ready;
                             axi.rvalid  <= 1'b1;
                             axi.rlast   <= 1'b1;
                             rd_state    <= 4'h0;

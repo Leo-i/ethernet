@@ -71,7 +71,7 @@ AXI_ethernet AXI_ethernet_1(
 .clk_50_mhz          ( clk_50_mhz       ),
 .axi                 ( axi_ethernet_1   ),
 .rmii                ( rmii_1           ),
-.rx_ready_int        ( eth_1_int        )
+.rx_ready            ( eth_1_int        )
 );
 
 AXI_ethernet AXI_ethernet_2(
@@ -79,7 +79,7 @@ AXI_ethernet AXI_ethernet_2(
 .clk_50_mhz          ( clk_50_mhz       ),
 .axi                 ( axi_ethernet_2   ),
 .rmii                ( rmii_2           ),
-.rx_ready_int        ( eth_2_int        )
+.rx_ready            ( eth_2_int        )
 );
 
 

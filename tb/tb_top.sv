@@ -29,7 +29,7 @@ module tb_top();
 logic   clk_200_mhz = 1'b1;
 logic   rst         = 1'b0;
 wire    [7:0]       led;
-reg                 uart_rx;
+reg                 uart_rx = 1;
 
 reg     [1:0]       rx_d_1;
 wire    [1:0]       tx_d_1;
@@ -142,6 +142,22 @@ task send_ethernet(
     end
 endtask
 
+int uart_iteration;
+task send_uart(
+    input   [7:0] data
+);
+    begin
+        uart_rx <= 1'b0;
+    
+        for (int uart_iteration = 7; uart_iteration >= 0; uart_iteration--) begin
+            #(`UART_DELAY)
+            uart_rx <= data[uart_iteration];
+        end
+        #(`UART_DELAY)
+        uart_rx <= 1'b1;
+    end
+endtask
+
 reg [7:0] num = 7;
 initial begin
     rst     <= 1'b1;
@@ -150,26 +166,20 @@ initial begin
 
     fork
         begin
-            #(20*`CLK_PERIOD)
-            send_ethernet(27);
+            #(2000*`CLK_PERIOD)
+            send_ethernet(1);
         end
         begin
             while (1) begin
                 num = num + 1;
-                #(12000*`CLK_PERIOD)
+                #(20000*`CLK_PERIOD)
                 send_uart(num);
             end
-        end
-        begin
-            #(15000*`CLK_PERIOD)
-            rst     <= 1'b1;
-            #(100*`CLK_PERIOD);
-            rst     <= 1'b0;
         end
     join_none
 end
 
-assign uart_rx = uart_tx;
+//assign uart_rx = uart_tx;
 assign rx_er_1  = 0;
 
 top top(
@@ -206,20 +216,6 @@ top top(
 
 
 
-task send_uart(
-    input   [7:0] data
-);
-    begin
-        uart_rx <= 1'b0;
-    
-        for (int i = 7; i >= 0; i--) begin
-            #(`UART_DELAY)
-            uart_rx <= data[i];
-        end
-        #(`UART_DELAY)
-        uart_rx <= 1'b1;
-    end
-endtask
 
 always begin
     #(`CLK_PERIOD/2) clk_200_mhz = ~clk_200_mhz;

@@ -87,7 +87,7 @@ int ETHERNET_protocol( unsigned int module ){
     return (int)*p;
 }
 
-int ETHERNET_rx_empty( unsigned int module ){
+int ETHERNET_rx_ready( unsigned int module ){
     
     int *p;
     if ( module == 1)
