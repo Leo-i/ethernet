@@ -36,9 +36,7 @@ wire    [1:0]       tx_d_1;
 reg                 crs_dv_1;
 
 
-
-
-
+/////////////////////////////////////////////////////// SEND VIA ETHERNET //////////////////////////////////////////////
 int fd;
 int i;
 string line;
@@ -46,7 +44,6 @@ string str;
 int length;
 int j;
 reg [7:0] data_eth;
-
 task send_ethernet(
     input   [7:0] data_count
 );
@@ -142,45 +139,78 @@ task send_ethernet(
     end
 endtask
 
+/////////////////////////////////////////////////////// SEND VIA UART //////////////////////////////////////////////
 int uart_iteration;
 task send_uart(
     input   [7:0] data
 );
     begin
+        #(`UART_DELAY*4)
         uart_rx <= 1'b0;
     
-        for (int uart_iteration = 7; uart_iteration >= 0; uart_iteration--) begin
+        for (int uart_iteration = 0; uart_iteration < 8; uart_iteration++) begin
             #(`UART_DELAY)
             uart_rx <= data[uart_iteration];
         end
         #(`UART_DELAY)
         uart_rx <= 1'b1;
+
+        $display("data was sent via uart : %0h", data);
     end
 endtask
 
-reg [7:0] num = 7;
+/////////////////////////////////////////////////////// SEND FILE VIA UART //////////////////////////////////////////////
+
+
+int iteration;
+reg [31:0] data_to_rx;
+task send_data_file_uart(
+    string          path
+);
+    begin
+        fd = $fopen (path, "r");   
+        if (fd) begin
+            $display("File was opened successfully : %0s", fd);
+            
+            while (!$feof(fd)) begin
+
+                $fgets(line, fd);
+                $display ("%d", line );
+                data_to_rx = line.atohex();
+
+                send_uart(data_to_rx[31:24]);
+                send_uart(data_to_rx[23:16]);
+                send_uart(data_to_rx[15:8]);
+                send_uart(data_to_rx[7:0]);
+
+            end
+        end else
+            $display("File was NOT opened successfully : %0d", fd);
+    end
+endtask
+
+
+///////////////////////////////////////// START //////////////////////////////////////////////////
 initial begin
     rst     <= 1'b1;
     #(100*`CLK_PERIOD);
     rst     <= 1'b0;
 
-    fork
-        begin
-            #(2000*`CLK_PERIOD)
-            send_ethernet(1);
-        end
-        begin
-            while (1) begin
-                num = num + 1;
-                #(20000*`CLK_PERIOD)
-                send_uart(num);
-            end
-        end
-    join_none
-end
+    send_uart(8'h12);
+    send_uart(8'h78);
 
-//assign uart_rx = uart_tx;
+    send_uart(8'h38); // start bootloader
+    send_uart(8'h00); // end addr 32 bit
+    send_uart(8'h00);
+    send_uart(8'h07);
+    send_uart(8'h14);
+    send_data_file_uart("D:/projects/PicoRV32/src/sw/set_led_dat.txt");
+
+end
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
 assign rx_er_1  = 0;
+wire [1:0] tx_d_2;
 
 top top(
 .clk_200_mhz    ( clk_200_mhz  ),
