@@ -117,7 +117,7 @@ reg                     pcpi_ready  = 1'b0;
 
 picorv32 #(
 
-.PROGADDR_RESET             ( 32'h00000538      ),
+.PROGADDR_RESET             ( 32'h000006e8      ),
 .REGS_INIT_ZERO             ( 1                 ),
 .STACKADDR                  ( 32'h00008000      )
 ) core (

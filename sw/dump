@@ -374,7 +374,7 @@ Disassembly of section .text:
  540:	02812423          	sw	x8,40(x2)
  544:	02912223          	sw	x9,36(x2)
  548:	03010413          	addi	x8,x2,48
- 54c:	6b800793          	addi	x15,x0,1720
+ 54c:	6e800793          	addi	x15,x0,1768
  550:	fef42423          	sw	x15,-24(x8)
  554:	badff0ef          	jal	x1,100 <UART_check>
  558:	00050793          	addi	x15,x10,0
@@ -469,7 +469,7 @@ Disassembly of section .text:
  6bc:	fef42623          	sw	x15,-20(x8)
  6c0:	fec42703          	lw	x14,-20(x8)
  6c4:	fe442783          	lw	x15,-28(x8)
- 6c8:	f2f74ce3          	blt	x14,x15,600 <bootloader+0xc8>
+ 6c8:	f2e7dce3          	bge	x15,x14,600 <bootloader+0xc8>
  6cc:	01c0006f          	jal	x0,6e8 <main>
  6d0:	00000013          	addi	x0,x0,0
  6d4:	02c12083          	lw	x1,44(x2)

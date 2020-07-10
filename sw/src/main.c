@@ -21,7 +21,7 @@ void bootloader(){
 
     int data;
 
-    for (int i = min_addr; i < max_addr; i = i + 4)
+    for (int i = min_addr; i <= max_addr; i = i + 4)
     {
         int *p = i;
 
@@ -43,25 +43,25 @@ void bootloader(){
     asm ("j main");
     
 }
-// int main(void){
-//     set_led(0x8E);
-// }
-
 int main(void){
-
-    while(1){
-
-        while(1) if (UART_check() != 0) break;
-
-        int data = UART_read_data();
-
-        if ( data == 0x38)
-            bootloader();
-        else
-            set_led(data);
-        
-    }
+    set_led(0x8E);
 }
+
+// int main(void){
+
+//     while(1){
+
+//         while(1) if (UART_check() != 0) break;
+
+//         int data = UART_read_data();
+
+//         if ( data == 0x38)
+//             bootloader();
+//         else
+//             set_led(data);
+        
+//     }
+// }
 
 
 
