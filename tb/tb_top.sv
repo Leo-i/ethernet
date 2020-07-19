@@ -204,7 +204,7 @@ initial begin
     send_uart(8'h00);
     send_uart(8'h07);
     send_uart(8'h14);
-    send_data_file_uart("D:/projects/PicoRV32/src/sw/set_led_dat.txt");
+    //send_data_file_uart("D:/projects/PicoRV32/src/sw/set_led_dat.txt");
 
 end
 /////////////////////////////////////////////////////////////////////////////////////////////////

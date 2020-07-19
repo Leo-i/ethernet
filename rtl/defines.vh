@@ -15,13 +15,10 @@
 `define ETHERNET_RX_DATA_COUNT              32'h00000010
 `define ETHERNET_RX_PROTOCOL_TYPE           32'h00000014
 
-`define ETHERNET_DM_MODE                    32'h00000018
-`define ETHERNET_DM_START                   32'h0000001C
-`define ETHERNET_DM_ADDR                    32'h00000020
-`define ETHERNET_DM_REG_ADDR                32'h00000024
-`define ETHERNET_DM_DATA_IN                 32'h00000028
-`define ETHERNET_DM_DATA_O                  32'h0000002C
-`define ETHERNET_DM_DONE                    32'h00000030
+`define ETHERNET_DM_ADDR_MODE               32'h00000018
+`define ETHERNET_DM_DATA_WRITE              32'h0000001C
+`define ETHERNET_DM_DATA_READ               32'h00000020
+`define ETHERNET_DM_BUSY                    32'h00000024
 
 `define LED_CTRL                            32'h00000000
 

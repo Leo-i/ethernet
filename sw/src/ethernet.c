@@ -97,3 +97,51 @@ int ETHERNET_rx_ready( unsigned int module ){
 
     return (int)*p;
 }
+
+void DM_set_reg( unsigned int module, unsigned int addr_mode, unsigned int data){
+    int *addr_mode_ptr;
+    int *data_ptr;
+
+    if ( module == 1)
+        addr_mode_ptr = ( ETHERNET_1_BASE_ADDR + ETHERNET_DM_ADDR_MODE );
+    else
+        addr_mode_ptr = ( ETHERNET_2_BASE_ADDR + ETHERNET_DM_ADDR_MODE );
+
+    if ( module == 1)
+        data_ptr = ( ETHERNET_1_BASE_ADDR + ETHERNET_DM_DATA_WRITE );
+    else
+        data_ptr = ( ETHERNET_2_BASE_ADDR + ETHERNET_DM_DATA_WRITE );
+
+    *data_ptr = data;
+    *addr_mode_ptr = addr_mode;
+}
+
+int DM_busy( unsigned int module ){
+    int *p;
+    if ( module == 1)
+        p = ( ETHERNET_1_BASE_ADDR + ETHERNET_DM_BUSY );
+    else
+        p = ( ETHERNET_2_BASE_ADDR + ETHERNET_DM_BUSY );
+
+    return (int)*p;
+}
+
+int DM_get_reg( unsigned int module, unsigned int addr_mode ){
+    int *addr_mode_ptr;
+    int *data;
+
+    if ( module == 1)
+        addr_mode_ptr = ( ETHERNET_1_BASE_ADDR + ETHERNET_DM_ADDR_MODE );
+    else
+        addr_mode_ptr = ( ETHERNET_2_BASE_ADDR + ETHERNET_DM_ADDR_MODE );
+
+    while(1)
+        if ( DM_busy(module) == 0 ) break;
+
+    if ( module == 1)
+        data = ( ETHERNET_1_BASE_ADDR + ETHERNET_DM_DATA_READ );
+    else
+        data = ( ETHERNET_2_BASE_ADDR + ETHERNET_DM_DATA_READ );
+
+    return (int)*data;
+}
