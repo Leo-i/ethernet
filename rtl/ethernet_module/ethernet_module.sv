@@ -47,12 +47,10 @@ module ethernet_module(
 
 // DM =====================================
     input                DM_start,
-    input                DM_mode, 
-    input       [4:0]    DM_addr,
-    input       [4:0]    DM_reg_addr,
-    input       [15:0]   DM_data_i,
-    output               DM_data_o,
-    output               DM_done,
+    output               DM_busy,
+    input       [10:0]   DM_addr_mode,
+    input       [15:0]   DM_data_write,
+    output      [15:0]   DM_data_read,
 // RMII ===================================
     output      [1:0]   tx_d,
     output              tx_e,
@@ -68,14 +66,12 @@ assign MDC = clk_25_mhz;
 controller DM_controller(
 .clk                ( clk_25_mhz        ),
 .rst_n              ( rst_n             ),
-.start              ( DM_start          ),
-.mode_i             ( DM_mode           ), 
-.addr_i             ( DM_addr           ),
-.reg_addr_i         ( DM_reg_addr       ),
-.data_i             ( DM_data_i         ),
+.start_i            ( DM_start          ),
+.addr_mode_i        ( DM_addr_mode      ),
+.data_i             ( DM_data_write     ),
 .MDIO_io            ( MDIO              ),
-.data_o             ( DM_data_o         ),
-.done               ( DM_done           )
+.data_o             ( DM_data_read      ),
+.busy_o             ( DM_busy           )
 );
 
 wire reset;

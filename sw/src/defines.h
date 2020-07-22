@@ -13,13 +13,10 @@
 #define ETHERNET_RX_DATA_COUNT              0x00000010
 #define ETHERNET_RX_PROTOCOL_TYPE           0x00000014
 
-#define ETHERNET_DM_MODE                    0x00000018
-#define ETHERNET_DM_START                   0x0000001C
-#define ETHERNET_DM_ADDR                    0x00000020
-#define ETHERNET_DM_REG_ADDR                0x00000024
-#define ETHERNET_DM_DATA_IN                 0x00000028
-#define ETHERNET_DM_DATA_O                  0x0000002C
-#define ETHERNET_DM_DONE                    0x00000030
+#define ETHERNET_DM_ADDR_MODE               0x00000018
+#define ETHERNET_DM_DATA_WRITE              0x0000001C
+#define ETHERNET_DM_DATA_READ               0x00000020
+#define ETHERNET_DM_BUSY                    0x00000024
 
 #define LED_CTRL                            0x00000000
 

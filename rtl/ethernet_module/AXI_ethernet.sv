@@ -44,11 +44,13 @@ assign rmii.MDC         = mdc;
 assign clk_100_mhz      = axi.aclk;
 assign rst_n            = axi.aresetn;
 
-reg                         DM_start   ;
-reg                         DM_mode    ;
-reg                [4:0]    DM_addr    ;
-reg                [4:0]    DM_reg_addr;
-reg                [15:0]   DM_data_i  ;
+
+reg                [10:0]    DM_addr_mode;
+reg                [15:0]   DM_data_write;
+wire               [15:0]   DM_data_read;
+reg                         DM_start;
+wire                        DM_busy;
+
 reg                [31:0]   tx_data_in ;
 reg                         tx_valid   ;
 reg                         tx_send;
@@ -143,18 +145,19 @@ always@( posedge axi.aclk ) begin
                             axi.rlast   <= 1'b1;
                             rd_state    <= 4'h0;
                         end
-                        `ETHERNET_DM_DATA_O: begin
-                            axi.rdata   <= DM_data_o;
+                        `ETHERNET_DM_DATA_READ: begin
+                            axi.rdata   <= DM_data_read[15:0];
                             axi.rvalid  <= 1'b1;
                             axi.rlast   <= 1'b1;
                             rd_state    <= 4'h0;
                         end
-                        `ETHERNET_DM_DONE: begin
-                            axi.rdata   <= DM_done;
+                        `ETHERNET_DM_BUSY: begin
+                            axi.rdata   <= DM_busy;
                             axi.rvalid  <= 1'b1;
                             axi.rlast   <= 1'b1;
                             rd_state    <= 4'h0;
                         end
+
                         default: rd_state   <= 4'h0;
                     endcase
                 else begin
@@ -245,36 +248,16 @@ always@( posedge axi.aclk ) begin
 
                             endcase
                         end                        
-                        `ETHERNET_DM_MODE : begin
-                            DM_mode     <= axi.wdata;
+                        `ETHERNET_DM_ADDR_MODE : begin
+                            DM_addr_mode   <= axi.wdata;
+                            DM_start       <= 1'b1;
                             axi.wready  <= 1'b1;
 
                             if ( axi.wlast )
                                 wr_state    <= 4'h2;
                         end
-                        `ETHERNET_DM_START : begin
-                            DM_start    <= axi.wdata;
-                            axi.wready  <= 1'b1;
-
-                            if ( axi.wlast )
-                                wr_state    <= 4'h2;
-                        end
-                        `ETHERNET_DM_ADDR : begin
-                            DM_addr     <= axi.wdata;
-                            axi.wready  <= 1'b1;
-
-                            if ( axi.wlast )
-                                wr_state    <= 4'h2;
-                        end
-                        `ETHERNET_DM_REG_ADDR : begin
-                            DM_reg_addr <= axi.wdata;
-                            axi.wready  <= 1'b1;
-
-                            if ( axi.wlast )
-                                wr_state    <= 4'h2;
-                        end
-                        `ETHERNET_DM_DATA_IN : begin
-                            DM_data_i   <= axi.wdata;
+                        `ETHERNET_DM_DATA_WRITE : begin
+                            DM_data_write   <= axi.wdata;
                             axi.wready  <= 1'b1;
 
                             if ( axi.wlast )
@@ -299,6 +282,9 @@ always@( posedge axi.aclk ) begin
                 axi.bvalid  <= 1'b0;
             end
         endcase
+
+    if ( DM_busy )
+        DM_start <= 1'b0;
 
     
     if ( tx_ready_to_send & ready_to_send_packet ) begin
@@ -340,12 +326,10 @@ ethernet_module ethernet(
 
 // DM =====================================
 .DM_start               ( DM_start          ),
-.DM_mode                ( DM_mode           ), 
-.DM_addr                ( DM_addr           ),
-.DM_reg_addr            ( DM_reg_addr       ),
-.DM_data_i              ( DM_data_i         ),
-.DM_data_o              ( DM_data_o         ),
-.DM_done                ( DM_done           ),
+.DM_busy                ( DM_busy           ),
+.DM_addr_mode           ( DM_addr_mode      ),
+.DM_data_write          ( DM_data_write     ),
+.DM_data_read           ( DM_data_read      ),
 
 // RMII ===================================
 .tx_d                   ( tx_d              ),

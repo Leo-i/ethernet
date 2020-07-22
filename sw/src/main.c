@@ -44,7 +44,7 @@ void bootloader(){
     
 }
 int main(void){
-    set_led(0x8E);
+    DM_set_reg(1,0x1AA,0xabcd);
 }
 
 // int main(void){
