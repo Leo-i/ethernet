@@ -27,3 +27,19 @@
 #define UART_TX_DATA                        0x00000004
 #define UART_TX_BUSY                        0x00000008
 #define UART_READY                          0x0000000C
+
+// regs description 
+// https://www.ti.com/lit/ds/symlink/dp83630.pdf?ts=1594928586430&ref_url=https%253A%252F%252Fwww.google.com%252F
+
+#define PHY_REG_BMCR                        0x00000000
+#define PHY_REG_BMSR                        0x00000001
+#define PHY_REG_PHYIDR1                     0x00000002
+#define PHY_REG_PHYIDR2                     0x00000003
+#define PHY_REG_ANAR                        0x00000004
+#define PHY_REG_ANLPAR                      0x00000005
+#define PHY_REG_ANER                        0x00000006
+#define PHY_REG_ANNPTR                      0x00000007
+#define PHY_REG_PHYSTS                      0x00000010
+#define PHY_REG_MICR                        0x00000011
+#define PHY_REG_MISR                        0x00000012
+#define PHY_REG_PAGESEL                     0x00000013
