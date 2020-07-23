@@ -1,7 +1,7 @@
 MEMORY
 {
-   rom(RX)   : ORIGIN = 0x0000, LENGTH = 0x5000
-   ram(WAIL) : ORIGIN = 0x5000, LENGTH = 0x3000
+   rom(RX)   : ORIGIN = 0x0000, LENGTH = 0x6000
+   ram(WAIL) : ORIGIN = 0x6000, LENGTH = 0x2000
 }
 
 ENTRY(main)

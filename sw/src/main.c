@@ -48,10 +48,10 @@ void bootloader(){ //download instructions via uart for main addr to main addr +
     asm ("j main");
 }
 
-char byte = 0x37;
+//char byte[4] = {0x37,0x0,0x0,0x0};
 
 int main(void){
-    DM_set_reg(1,0x1AA,0xabcd);
+    set_led(0x37);
 }
 
 

@@ -1,5 +1,7 @@
 
-module SoC_Wrapper(
+module SoC_Wrapper#(
+	parameter           INIT_FILE
+) (
 
 input           clk,
 input           clk_50_mhz,
@@ -19,7 +21,9 @@ AXI_LITE        core_master(clk, resetn);
 wire    [31:0]  irq;
 wire            eoi;
 
-core_region core_region(
+core_region #(
+.INIT_FILE      ( INIT_FILE   )
+)core_region(
 .clk            ( clk         ),
 .resetn         ( resetn      ),
 .irq            ( irq         ),

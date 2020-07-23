@@ -20,7 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module core_region (
+module core_region#(
+	parameter           INIT_FILE
+) (
     input           clk,
     input           resetn,
 
@@ -70,7 +72,9 @@ core2axi core2axi(
 .core_master                ( core_master   )
 );
 
-memory_module memory_module(
+memory_module #(
+.INIT_FILE                  ( INIT_FILE     )
+) memory_module (
 .clk                        ( clk           ),
 .resetn                     ( resetn        ),
 
@@ -117,7 +121,7 @@ reg                     pcpi_ready  = 1'b0;
 
 picorv32 #(
 
-.PROGADDR_RESET             ( 32'h00000854      ),
+.PROGADDR_RESET             ( 32'h00000000      ),
 .REGS_INIT_ZERO             ( 1                 ),
 .STACKADDR                  ( 32'h00008000      )
 ) core (
