@@ -1,28 +1,33 @@
+asm ("j main"); // start program
+
+//board support
 #include "defines.h"
+//drivers
 #include "uart_controller.c"
 #include "timer.c"
 #include "led_ctrl.c"
 #include "ethernet.c"
 
-void bootloader(){
-    int min_addr = 0x000006e8;
-    int max_addr;
+int main(void);//init
+
+void bootloader(){ //download instructions via uart for main addr to main addr + length
+    int min_addr = &main;
+    int length;
     while(1) if (UART_check() != 0) break;
-    max_addr = UART_read_data();
+    length = UART_read_data();
 
     while(1) if (UART_check() != 0) break;
-    max_addr = (max_addr << 8) + UART_read_data();
+    length = (length << 8) + UART_read_data();
 
     while(1) if (UART_check() != 0) break;
-    max_addr = (max_addr << 8) + UART_read_data();
+    length = (length << 8) + UART_read_data();
 
     while(1) if (UART_check() != 0) break;
-    max_addr = (max_addr << 8) + UART_read_data();
+    length = (length << 8) + UART_read_data();
 
     int data;
 
-    for (int i = min_addr; i <= max_addr; i = i + 4)
-    {
+    for (int i = min_addr; i <= length + min_addr ; i = i + 4){
         int *p = i;
 
         while(1) if (UART_check() != 0) break;
@@ -41,11 +46,15 @@ void bootloader(){
     }
 
     asm ("j main");
-    
 }
+
+char byte = 0x37;
+
 int main(void){
     DM_set_reg(1,0x1AA,0xabcd);
 }
+
+
 
 // int main(void){
 

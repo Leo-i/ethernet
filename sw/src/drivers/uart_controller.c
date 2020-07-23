@@ -1,4 +1,3 @@
-#include "defines.h"
 
 int UART_check_busy(){
     int *p = (UART_BASE_ADDR + UART_TX_BUSY);

@@ -1,4 +1,3 @@
-#include "defines.h"
 
 void ETHERNET_send_data(
                         unsigned int module,
