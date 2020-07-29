@@ -51,6 +51,7 @@ reg     [31:0]      read_addr;
 always@( posedge axi.aclk ) begin
     if ( axi.aresetn == 1'b0 ) begin
         rd_state        <= 2'h0;
+        rx_ready_int    <= 1'b0;
     end else
         case ( rd_state )
             4'h0: begin // initial

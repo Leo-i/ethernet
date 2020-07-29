@@ -45,11 +45,12 @@ int length;
 int j;
 reg [7:0] data_eth;
 task send_ethernet(
-    input   [7:0] data_count
+    input   [7:0] data_count,
+    string        file_name
 );
     begin
              
-    fd = $fopen ("D:/projects/PicoRV32/src/tb/tb_pack", "r");   
+    fd = $fopen (file_name, "r");   
     if (fd) begin
 
         $display("File was opened successfully : %0d", fd);
@@ -196,14 +197,14 @@ initial begin
     #(100*`CLK_PERIOD);
     rst     <= 1'b0;
 
-    send_uart(8'h12);
-    send_uart(8'h78);
 
-    send_uart(8'h38); // start bootloader
-    send_uart(8'h00); // end addr 32 bit
-    send_uart(8'h00);
-    send_uart(8'h07);
-    send_uart(8'h14);
+    send_uart(8'h12);
+    send_uart(8'hF5);
+
+    send_uart(8'h56);
+
+    send_ethernet(1,"D:/PROJECTS/VERILOG/ETHERNET/src/tb/tb_pack");
+
     //send_data_file_uart("D:/projects/PicoRV32/src/sw/set_led_dat.txt");
 
 end

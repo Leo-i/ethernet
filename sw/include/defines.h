@@ -12,6 +12,7 @@
 #define ETHERNET_RX_EMPTY                   0x0000000C
 #define ETHERNET_RX_DATA_COUNT              0x00000010
 #define ETHERNET_RX_PROTOCOL_TYPE           0x00000014
+#define ETHERNET_RX_MODE                    0x00000028
 
 #define ETHERNET_DM_ADDR_MODE               0x00000018
 #define ETHERNET_DM_DATA_WRITE              0x0000001C

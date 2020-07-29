@@ -77,7 +77,7 @@ clk_wiz_0 pll(
 assign rst_n = !rst;
 
 SoC_Wrapper #(
-.INIT_FILE            ( "D:/VERILOG/ETHERNET/src/sw/data.hex" )
+.INIT_FILE            ( "D:/PROJECTS/VERILOG/ETHERNET/src/sw/data_t" )
 )SoC_Wrapper(
 .clk                  ( clk_100_mhz     ),
 .clk_50_mhz           ( clk_50_mhz      ),

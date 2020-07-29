@@ -44,7 +44,7 @@ wire    [7:0]       data;
 
 reg                 wr_en;
 reg                 state = 1'b0;
-reg     [1:0]       send_state = 2'b00;
+reg     [2:0]       send_state = 3'h0;
 reg                 valid_fifo;
 reg     [31:0]      data_fifo;
 reg     [3:0]       delay;
@@ -57,7 +57,7 @@ always@( posedge clk_100_mhz ) begin
         ready_to_write  <= 1'b1;
         ready_to_send   <= 1'b0;
         wr_en           <= 1'b0;
-        send_state      <= 2'b00;
+        send_state      <= 3'h0;
         valid_fifo      <= 1'b0;
         data_fifo       <= 32'h0;
         delay           <= 4'h0;
@@ -67,19 +67,19 @@ always@( posedge clk_100_mhz ) begin
         if ( state == 1'b0 )
 
                 case ( send_state )
-                    2'b00: begin  
+                    3'h0: begin  
                         
                         data_fifo       <= 32'h55555555; 
                         send_state      <= 2'b01; 
                         valid_fifo      <= 1'b1;
                         
                     end //preamble
-                    2'b01:  begin
+                    3'h1:  begin
                         data_fifo       <= 32'h555555D5; 
                         send_state      <= 2'b10; 
                         valid_fifo      <= 1'b1; 
                     end
-                    2'b10: begin 
+                    3'h2: begin 
 
                         if ( !last_data ) begin
                             valid_fifo  <= valid;
@@ -94,7 +94,7 @@ always@( posedge clk_100_mhz ) begin
 
                     end 
 
-                    2'b11: begin
+                    3'h3: begin
                         valid_fifo          <= 1'b0;
                         if ( send ) begin
                             state           <= 1'b1;

@@ -30,6 +30,7 @@ module receiver_wrapper(
     input               crs_dv,
 
     output  reg         ready,
+    input               mode,
 
     output       [31:0] data_o,
     input               read_en,
@@ -88,6 +89,7 @@ receiver receiver(
 .rx_er          ( rx_er             ),
 .rx_d           ( rx_d              ),
 .crs_dv         ( crs_dv            ),
+.mode           ( mode              ),
 .data_o         ( data              ),
 .done           ( done              )
 );

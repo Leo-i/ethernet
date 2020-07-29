@@ -7,6 +7,7 @@ module receiver(
     input               rx_er,
     input        [1:0]  rx_d,
     input               crs_dv,
+    input               mode,
 
     output  reg  [7:0]  data_o,
     output  reg         done
@@ -22,13 +23,13 @@ module receiver(
             done            <= 1'b0;
             counter         <= 2'b00;
             state           <= 1'b0;
-            data_o          <= 8'b0;
+            data_o          <= 8'h00;
 
         end else if ( crs_dv && !rx_er ) begin
 
             data_o    <= {rx_d[1:0],data_o[7:2]};
 
-            case ( state )
+            case ( state | mode )
             
                 1'b0: begin //IDLE
 

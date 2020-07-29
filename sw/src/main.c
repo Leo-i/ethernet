@@ -4,13 +4,17 @@ asm ("j main"); // start program
 #include "defines.h"
 //drivers
 #include "uart_controller.c"
+#include "common_functions.c"
 #include "timer.c"
 #include "led_ctrl.c"
 #include "ethernet.c"
+//ПО
+#include "ethernet_protocol.h"
+#include "arp_protocol.h"
 
 int main(void);//init
 
-void bootloader(){ //download instructions via uart for main addr to main addr + length
+void bootloader(){ // Обновляем ПО, сначала пишем длину прошивки, потом ее саму
     int min_addr = &main;
     int length;
     while(1) if (UART_check() != 0) break;
@@ -48,152 +52,43 @@ void bootloader(){ //download instructions via uart for main addr to main addr +
     asm ("j main");
 }
 
-//char byte[4] = {0x37,0x0,0x0,0x0};
+char A = 0x37;
 
 int main(void){
-    set_led(0x37);
+
+
+    int rx_data [375];
+    int tx_data [375];
+    char command = 0x1;
+
+    //init_packet(&tx_data);
+
+    set_led(A);
+
+    while(1){
+        
+        // Определяем команду пришедшую с юарт
+        if ( UART_check() != 0 )
+            command = UART_read_data();
+
+        switch ( command ){
+
+            case 0x38: bootloader(); break; // обновляем ПО
+
+            case 0x56: listener_mode(1); break; //Прослушиваем порт
+            case 0x57: listener_mode(2); break; 
+
+            case 0xA4: send_echo_query(1); break;  // Отправить эхо запрос
+            case 0xA6: send_echo_query(2); break; 
+
+            case 0x85: ETHERNET_set_RX_mode(1,0); break; // режим работы приемника
+            case 0x86: ETHERNET_set_RX_mode(1,1); break;
+
+            case 0x20: retranslator_mode(); break; // переходим в режим ретранслятора
+            
+            default: set_led(command); // Если пришла неизвестная команда то выводим ее на светодиоды
+        }
+    }
+       
 }
-
-
-
-// int main(void){
-
-//     while(1){
-
-//         while(1) if (UART_check() != 0) break;
-
-//         int data = UART_read_data();
-
-//         if ( data == 0x38)
-//             bootloader();
-//         else
-//             set_led(data);
-        
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// int main(void){
-
-//     int rx_data[375];
-//     int tx_data[375];
-
-//     tx_data[0] = 0xc0c0c0c0;
-//     tx_data[1] = 0xc0c0c0c0;
-//     tx_data[2] = 0xc0c0c0c0;
-//     tx_data[3] = 0xc0c0c0c0;
-//     tx_data[4] = 0xc0c0c0c0;
-
-//     ETHERNET_send_data(2,tx_data,20); // initialize
-
-//     delay_us(100);
-
-
-//     tx_data[0]  = 0xFFFFFFFF;
-//     tx_data[1]  = 0xFFFF0003;
-//     tx_data[2]  = 0x47a49ABC;
-//     tx_data[3]  = 0x08060001;
-//     tx_data[4]  = 0x08000604;
-//     tx_data[5]  = 0x00020003;
-//     tx_data[6]  = 0x47a49ABC;
-//     tx_data[7]  = 0xc0a8016e;
-//     tx_data[8]  = 0x0000c0a9;
-//     tx_data[9]  = 0x00000000;
-//     tx_data[10] = 0x0000c0a8;
-//     tx_data[11] = 0x01010000;
-//     tx_data[12] = 0x00000000;
-
-
-//     int command = 0;
-//     int mode    = 0;
-//     int byte;
-//     int data_count;
-//     int protocol;
-	
-//     while(1){
-        
-//         if ( UART_check() != 0){
-//             command = UART_read_data();
-
-//             switch ( command )
-//             {
-//             case 208:
-//                 ETHERNET_send_data(2,tx_data,52);
-//                 break;
-//             case 240:
-//                 ETHERNET_send_data(2,tx_data[2],44);
-//                 break;
-//             case 156: //listener
-//                 mode = 156;
-//                 break;
-//             case 68://retranslator
-//                 mode = 68;
-//                 break;
-//             // case 215:
-//             //     while (1){
-
-//             //         if ( UART_check() != 0){
-
-//             //         }
-//             //     }
-//             //     break;
-//             default:
-//                 set_led(command);
-//                 break;
-//             }
-//         }
-
-//         if ( mode == 68 ){ //retranslator mode
-
-//             if (ETHERNET_rx_ready(1)){
-//                 ETHERNET_read_data(1,rx_data);
-//                 data_count = ETHERNET_data_count(1);
-//                 ETHERNET_send_data(2,rx_data,data_count+4);
-//             }
-
-//             if (ETHERNET_rx_ready(2)){
-//                 ETHERNET_read_data(2,rx_data);
-//                 data_count = ETHERNET_data_count(2);
-//                 ETHERNET_send_data(1,rx_data,data_count+4);
-//             }
-
-
-//         } else //listener mode
-
-//             if (ETHERNET_rx_ready(1)){
-        
-//                 protocol   = ETHERNET_protocol(1);
-//                 data_count = ETHERNET_data_count(1);
-//                 ETHERNET_read_data(1,rx_data);
-
-//                 // while (UART_check_busy());
-                
-//                 // for ( int byte = 0; byte < ( data_count >> 2 ); byte = byte + 1){
-
-//                 //     while (UART_check_busy());
-//                 //     UART_send_word(rx_data[byte]);
-//                 // }
-//             }
-        
-//    }
-// }
-
-
-
-
-
 

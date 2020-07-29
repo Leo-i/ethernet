@@ -53,7 +53,7 @@ void ETHERNET_read_data(
     }
 }
 
-int ETHERNET_check_done( unsigned int module ){
+char ETHERNET_check_done( unsigned int module ){ // TX done
     
     int *p;
     if ( module == 1)
@@ -86,7 +86,7 @@ int ETHERNET_protocol( unsigned int module ){
     return (int)*p;
 }
 
-int ETHERNET_rx_ready( unsigned int module ){
+char ETHERNET_rx_ready( unsigned int module ){
     
     int *p;
     if ( module == 1)
@@ -95,6 +95,21 @@ int ETHERNET_rx_ready( unsigned int module ){
         p = ( ETHERNET_2_BASE_ADDR + ETHERNET_RX_EMPTY );
 
     return (int)*p;
+}
+
+void ETHERNET_set_RX_mode(
+                        unsigned int module,
+                        unsigned int mode ) // bytes count
+{
+    int *p;
+    if ( module == 1)
+        p = ( ETHERNET_1_BASE_ADDR + ETHERNET_RX_MODE );
+    else
+        p = ( ETHERNET_2_BASE_ADDR + ETHERNET_RX_MODE );
+
+    *p = mode;
+    
+    
 }
 
 void DM_set_reg( unsigned int module, unsigned int addr_mode, unsigned int data){
@@ -115,7 +130,7 @@ void DM_set_reg( unsigned int module, unsigned int addr_mode, unsigned int data)
     *addr_mode_ptr = addr_mode;
 }
 
-int DM_busy( unsigned int module ){
+char DM_busy( unsigned int module ){
     int *p;
     if ( module == 1)
         p = ( ETHERNET_1_BASE_ADDR + ETHERNET_DM_BUSY );

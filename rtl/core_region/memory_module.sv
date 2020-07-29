@@ -36,11 +36,14 @@ module memory_module#(
     output reg  [31:0]  mem_rdata_mem    
 );
 
-reg [31:0] mem [8192:0];
+reg [7:0] mem [32768:0];
 wire [31:0] addr;
-assign addr = mem_addr_mem >> 2;
+assign addr = mem_addr_mem;
 
 initial begin
+    for ( int i=0,i=4;i<32768;i++) begin
+      mem[i] = 8'h00;
+    end
    $readmemh(INIT_FILE,mem);
 end
 
@@ -51,21 +54,39 @@ always_ff@( posedge clk ) begin
     else if( mem_valid_mem ) begin
         
         if ( mem_wstrb_mem == 4'h0 ) begin
-            mem_rdata_mem   <= mem[addr];
+            mem_rdata_mem   <= { mem[addr+3], mem[addr+2], mem[addr+1], mem[addr] };
             mem_ready_mem   <= 1'b1;
         end else 
             case ( mem_wstrb_mem )
                 
-                4'hF: begin mem_ready_mem <= 1'b1; mem[addr] <= mem_wdata_mem; end
+                4'hF: begin 
+                    mem_ready_mem <= 1'b1; 
+                    mem[addr+3] <= mem_wdata_mem[31:24]; 
+                    mem[addr+2] <= mem_wdata_mem[23:16];
+                    mem[addr+1] <= mem_wdata_mem[15:8];
+                    mem[addr]   <= mem_wdata_mem[7:0];
+                end
 
-                4'h3: begin mem_ready_mem <= 1'b1; mem[addr][15:0] <= mem_wdata_mem[15:0]; end
-                4'h6: begin mem_ready_mem <= 1'b1; mem[addr][23:8] <= mem_wdata_mem[23:8]; end
-                4'hC: begin mem_ready_mem <= 1'b1; mem[addr][31:16] <= mem_wdata_mem[31:16]; end
+                //'h3: begin mem_ready_mem <= 1'b1; mem[addr][15:0] <= mem_wdata_mem[15:0]; end
+                //'h6: begin mem_ready_mem <= 1'b1; mem[addr][23:8] <= mem_wdata_mem[23:8]; end
+                //'hC: begin mem_ready_mem <= 1'b1; mem[addr][31:16] <= mem_wdata_mem[31:16]; end
 
-                4'h1: begin mem_ready_mem <= 1'b1; mem[addr][7:0] <= mem_wdata_mem[7:0]; end
-                4'h2: begin mem_ready_mem <= 1'b1; mem[addr][15:8] <= mem_wdata_mem[15:8]; end
-                4'h4: begin mem_ready_mem <= 1'b1; mem[addr][23:16] <= mem_wdata_mem[23:16]; end
-                4'h8: begin mem_ready_mem <= 1'b1; mem[addr][31:24] <= mem_wdata_mem[31:24]; end
+                4'h1: begin 
+                    mem_ready_mem <= 1'b1; 
+                    mem[addr] <= mem_wdata_mem[7:0]; 
+                end
+                4'h2: begin 
+                    mem_ready_mem <= 1'b1; 
+                    mem[addr + 1]<= mem_wdata_mem[15:8]; 
+                end
+                4'h4: begin 
+                    mem_ready_mem <= 1'b1; 
+                    mem[addr + 2] <= mem_wdata_mem[23:16]; 
+                end
+                4'h8: begin 
+                    mem_ready_mem <= 1'b1; 
+                    mem[addr + 3] <= mem_wdata_mem[31:24]; 
+                end
 
                 default:;
             endcase

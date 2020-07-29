@@ -14,6 +14,7 @@
 `define ETHERNET_RX_EMPTY                   32'h0000000C
 `define ETHERNET_RX_DATA_COUNT              32'h00000010
 `define ETHERNET_RX_PROTOCOL_TYPE           32'h00000014
+`define ETHERNET_RX_MODE                    32'h00000028
 
 `define ETHERNET_DM_ADDR_MODE               32'h00000018
 `define ETHERNET_DM_DATA_WRITE              32'h0000001C

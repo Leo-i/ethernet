@@ -6,13 +6,16 @@ OBJDUMP =	$(CROSS_COMPILE)objdump
 OBJCOPY =	$(CROSS_COMPILE)objcopy
 SIZE    =	$(CROSS_COMPILE)size
 
-CFLAGS  = -march=rv32i -mabi=ilp32 -Wextra -pedantic -ffreestanding -nostartfiles
-POINTERS = -Ttext=0x0000 ##-T script.ld ##
+CFLAGS  = -march=rv32i -mabi=ilp32 -Wextra -pedantic -ffreestanding -nostartfiles 
+POINTERS = -T script.ld ##-Ttext=0x0000##
 
 DEFINES	= include
+ICLUDE = include/ethernet_protocol
 DRIVERS = src/drivers
 
 MAIN = src/main.c
+SRC = src/ethernet_protocol/ethernet_protocol.c \
+	src/ethernet_protocol/arp_protocol.c
 
 coe:
 	make hex
@@ -20,16 +23,9 @@ coe:
 
 hex: 
 	make clean
-	$(CC) $(MAIN) $(DRIVERS:%=-I %) $(DEFINES:%=-I%) $(CFLAGS) $(POINTERS) -o main.elf
-	$(OBJCOPY) -O verilog -R.comment -R.debug_info -R.debug_line -R.debug_str --reverse-bytes=4 main.elf data_t
+	$(CC) $(MAIN) $(DRIVERS:%=-I %) $(DEFINES:%=-I%) $(ICLUDE:%=-I%) $(SRC:%=-lm %) $(CFLAGS) $(POINTERS) -o main.elf
+	$(OBJCOPY) -O verilog -R.comment -R.debug_info -R.debug_line -R.debug_str  main.elf data_t 
 	$(OBJDUMP) -D main.elf > disasm_boot.S
-	#sed -i -e "1d" data_t
-	sed -i -e s/' '//g -i data_t
-	sed -i -e 's/@0/@/g' data_t
-	sed -i -e 's/.\{8\}/&\n/g' data_t
-	sed -i -e "s/\ /,\ /g" data_t
-	grep "\S" data_t > data.hex
-	rm -f data_t
 
 
 help:

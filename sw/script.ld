@@ -5,13 +5,3 @@ MEMORY
 }
 
 ENTRY(main)
-
-SECTIONS
-{
-  .text : { *(.text) } > rom
-  _data_start = .;
-  .data : { *(.data) } > ram AT> rom
-  _bss_start = .;
-  .bss  : { *(.bss) }  > ram
-  _bss_end = .;
-}

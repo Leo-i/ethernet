@@ -65,6 +65,7 @@ reg     [15:0]      counter;
 
 reg                 rx_int;
 reg                 rx_clear;
+reg                 rx_mode;
 reg                 rx_read_en;
 
 
@@ -197,6 +198,7 @@ always@( posedge axi.aclk ) begin
         ready_to_send_packet    <= 1'b0;
         last_data               <= 1'b0;
         tx_valid                <= 1'b0;
+        rx_mode                 <= 1'b0;
     end else begin
         case ( wr_state )
             4'h0: begin
@@ -251,6 +253,13 @@ always@( posedge axi.aclk ) begin
                         `ETHERNET_DM_ADDR_MODE : begin
                             DM_addr_mode   <= axi.wdata;
                             DM_start       <= 1'b1;
+                            axi.wready  <= 1'b1;
+
+                            if ( axi.wlast )
+                                wr_state    <= 4'h2;
+                        end
+                        `ETHERNET_RX_MODE : begin
+                            rx_mode   <= axi.wdata;
                             axi.wready  <= 1'b1;
 
                             if ( axi.wlast )
@@ -322,6 +331,7 @@ ethernet_module ethernet(
 .rx_empty               ( rx_empty          ),
 .rx_data_count          ( rx_data_count     ),
 .rx_protocol_type       ( rx_protocol_type  ),
+.rx_mode                ( rx_mode           ),
 .rx_clear               ( rx_clear          ),
 
 // DM =====================================
